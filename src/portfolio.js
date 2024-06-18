@@ -83,7 +83,7 @@ const educationInfo = {
   schools: [
     {
       schoolName: "University of Washington",
-      logo: require("/Users/rohanpandey/Desktop/Washington_Huskies_logo.png"),
+      logo: require("./Washington_Huskies_logo.png"),
       subHeader: "Bachelor of Science in Applied and Computational Mathematical Sciences",
       duration: "September 2022 - December 2025",
       desc: "NASA Space Grant Scholar | Dean's List | Minor in Applied Mathematics",
@@ -125,7 +125,7 @@ const workExperiences = {
     {
       role: "Project Manager",
       company: "National Aeronautics and Space Administration - NASA",
-      companylogo: require("/Users/rohanpandey/Desktop/NASA_logo.svg.png"),
+      companylogo: require("./NASA_logo.svg.png"),
       date: "May 2024 – Present",
       desc: "Led a low-cost robotic surface reconnaissance project to map near-surface water ice in the lunar South Pole’s Permanently Shadowed Regions, ensuring task completion and document consistency to support future moon landings",
       descBullets: [
@@ -136,14 +136,14 @@ const workExperiences = {
     {
       role: "Research Intern",
       company: "University of Washington - Department of Applied Mathematics",
-      companylogo: require("/Users/rohanpandey/Desktop/Washington_Huskies_logo.png"),
+      companylogo: require("./Washington_Huskies_logo.png"),
       date: "April 2023 - Present",
       desc: "Conducted research with Dr. Konstantinos Mamis on combinatorics and moments of normal distribution, analyzing extensions of Stein’s Lemma and performing matrix manipulations. Investigated the theory of Gaussian processes with applications in stochastic dynamical systems for epidemiology and cancer modeling, contributing to the development of new mathematical models"
     },
     {
       role: "Lead Engineer",
       company: "Society of Advanced Rocket Propulsion - SARP",
-      companylogo: require("/Users/rohanpandey/Desktop/Washington_Huskies_logo.png"),
+      companylogo: require("./Washington_Huskies_logo.png"),
       date: "September 2022 - June 2024",
       desc: "Led a team to build a recovery system that guides the rocket back to a GPS location. Analyzed the flight path using C++ and Python, and designed a load cell algorithm with Arduino. Developed a data transmission system to model the rocket flight path and plot its GPS location",
       descBullets: [
@@ -170,7 +170,7 @@ const bigProjects = {
   subtitle: "SOME OF MY BIG PROJECTS",
   projects: [
     {
-      image: require("/Users/rohanpandey/Desktop/Research Rover.png"),
+      image: require("./Research Rover.png"),
       projectName: "Research Rover",
       projectDesc: "Research Rover is a cutting-edge website that aids users in their research pursuits. It offers tailored research topics, paper links, and concise model and statistic summaries. This resource is especially valuable for students and researchers seeking guidance in exploring specific areas of interest. The model was built using LLMs and Crew AI to have AI Agents that can answer questions and provide summaries of research papers",
       footerLink: [
@@ -182,7 +182,7 @@ const bigProjects = {
       ]
     },
     {
-      image: require("/Users/rohanpandey/Desktop/OpenBCI_Logo.png"),
+      image: require("./OpenBCI_Logo.png"),
       projectName: "MindTunes",
       projectDesc: "Our product aims to provide a solution for each unique user to remain concentrated by taking a short test, and determining what genre of music is optimal for the user to stay concentrated. We used OpenBCI's Cap kit, to help create a product that can help users stay concentrated and focused on their work. More information can be found on our Github page. This project won third place at the NeuroAI Hackathon at UW in 2024",
       footerLink: [

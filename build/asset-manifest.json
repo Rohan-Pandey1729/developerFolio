@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/developerFolio/static/css/main.c2a68b33.css",
+    "main.js": "/developerFolio/static/js/main.bf3772b6.js",
+    "static/css/64.bba8fa55.chunk.css": "/developerFolio/static/css/64.bba8fa55.chunk.css",
+    "static/js/64.56dc6704.chunk.js": "/developerFolio/static/js/64.56dc6704.chunk.js",
+    "static/css/769.b3cbb36b.chunk.css": "/developerFolio/static/css/769.b3cbb36b.chunk.css",
+    "static/js/769.bda0d7b7.chunk.js": "/developerFolio/static/js/769.bda0d7b7.chunk.js",
+    "static/media/Montserrat-Regular.ttf": "/developerFolio/static/media/Montserrat-Regular.3cd786652b8a2e9d41f2.ttf",
+    "static/media/NASA_logo.svg.png": "/developerFolio/static/media/NASA_logo.svg.aee7640938edfabfbe4a.png",
+    "static/media/Research Rover.png": "/developerFolio/static/media/Research Rover.70c2b76c7af34d6a3d93.png",
+    "static/media/Agustina.woff": "/developerFolio/static/media/Agustina.eb0c59dda4cc308cba96.woff",
+    "static/media/OpenBCI_Logo.png": "/developerFolio/static/media/OpenBCI_Logo.3cc80d618280a994a37c.png",
+    "static/media/Washington_Huskies_logo.png": "/developerFolio/static/media/Washington_Huskies_logo.73be72957a25f0993733.png",
+    "static/media/manOnTable.svg": "/developerFolio/static/media/manOnTable.8f117eb207e57ed8f89d67d595aceb45.svg",
+    "static/media/contactMailDark.svg": "/developerFolio/static/media/contactMailDark.1db650d351729a0f17b4e3104e6a7b7a.svg",
+    "static/media/developerActivity.svg": "/developerFolio/static/media/developerActivity.2c0445cae86f4243433a2f5a22b2c031.svg",
+    "static/media/skill.svg": "/developerFolio/static/media/skill.35a147662ab0a1d15e579690446e0258.svg",
+    "static/media/resume.pdf": "/developerFolio/static/media/resume.f0f733dd3cd732b39262.pdf",
+    "index.html": "/developerFolio/index.html",
+    "static/media/talksCardBack.svg": "/developerFolio/static/media/talksCardBack.73ed1545d58273ba64b0.svg",
+    "main.c2a68b33.css.map": "/developerFolio/static/css/main.c2a68b33.css.map",
+    "main.bf3772b6.js.map": "/developerFolio/static/js/main.bf3772b6.js.map",
+    "64.bba8fa55.chunk.css.map": "/developerFolio/static/css/64.bba8fa55.chunk.css.map",
+    "64.56dc6704.chunk.js.map": "/developerFolio/static/js/64.56dc6704.chunk.js.map",
+    "769.b3cbb36b.chunk.css.map": "/developerFolio/static/css/769.b3cbb36b.chunk.css.map",
+    "769.bda0d7b7.chunk.js.map": "/developerFolio/static/js/769.bda0d7b7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c2a68b33.css",
+    "static/js/main.bf3772b6.js"
+  ]
+}

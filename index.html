@@ -1,1 +1,397 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>DeveloperFolio | Developer Portfolio Template</title><meta name="title" content="DeveloperFolio | Developer Portfolio Template"><meta name="description" content="Software Developer Portfolio Template that helps you showcase your work and skills as a software developer"><meta property="og:type" content="website"><meta property="og:url" content="https://developerfolio.js.org/"><meta property="og:title" content="DeveloperFolio | Developer Portfolio Template"><meta property="og:description" content="Software Developer Portfolio Template that helps you showcase your work and skills as a software developer"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://developerfolio.js.org/"><meta property="twitter:title" content="DeveloperFolio | Developer Portfolio Template"><meta property="twitter:description" content="Software Developer Portfolio Template that helps you showcase your work and skills as a software developer"><meta name="msapplication-TileColor" content="#603cba"><meta name="theme-color" content="#6c63ff"/><link rel="icon" type="image/png" sizes="32x32" href="/developerFolio/favicon-32x32.png?v8=qAJ44G5Bm7"><link rel="icon" type="image/png" sizes="16x16" href="/developerFolio/favicon-16x16.png?v8=qAJ44G5Bm7"><link rel="mask-icon" href="/developerFolio/safari-pinned-tab.svg?v8=qAJ44G5Bm7" color="#885bd5"><link rel="shortcut icon" href="/developerFolio/favicon.ico?v8=qAJ44G5Bm7"><link rel="apple-touch-icon" sizes="180x180" href="/developerFolio/apple-touch-icon.png?v8=qAJ44G5Bm7"><link rel="manifest" href="/developerFolio/manifest.json"/><link rel="preload" href="/static/media/Montserrat-Regular.ee653992.ttf" as="font" type="font/woff" crossorigin><link rel="preload" href="/static/media/Agustina.21f233e1.woff" as="font" type="font/woff" crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-135618960-2"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-135618960-2")</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.4/css/all.min.css"><script defer="defer" src="/developerFolio/static/js/main.bf3772b6.js"></script><link href="/developerFolio/static/css/main.c2a68b33.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rohan Pandey - Research Scientist & ML Engineer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">RP</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#hackathons" class="nav-link">Hackathons</a></li>
+                <li><a href="#publications" class="nav-link">Publications</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">Rohan Pandey</span>
+                    </h1>
+                    <h2 class="hero-subtitle">Research Scientist & Machine Learning Engineer</h2>
+                    <p class="hero-description">
+                        Currently a Research Assistant at Math AI Lab (UW) working on reinforcement learning for polynomial synthesis, 
+                        and a Data Scientist Intern at Fred Hutch developing CAR T-cell therapy models. 
+                        Passionate about AI research, mathematical optimization, and cutting-edge ML applications.
+                        Check out my updated resume for the latest experience and achievements.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                        <a href="resume.pdf" class="btn btn-secondary" target="_blank">View Updated Resume</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-card">
+                        <i class="fas fa-brain"></i>
+                        <span>ML & RL</span>
+                    </div>
+                    <div class="floating-card">
+                        <i class="fas fa-dna"></i>
+                        <span>Cancer Research</span>
+                    </div>
+                    <div class="floating-card">
+                        <i class="fas fa-rocket"></i>
+                        <span>Rocketry</span>
+                    </div>
+                </div>
+                <!-- floating cards (3D model removed) -->
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a Research Scientist and Machine Learning Engineer with a passion for pushing the boundaries of technology and science. Currently pursuing Applied and Computational Mathematical Sciences with a concentration in Scientific Computing and Numerical Analysis at the University of Washington.</p>
+                    
+                    <p>I'm also minoring in Neural Computation and Engineering, focusing on AI applications in Neuroscience. My current research spans reinforcement learning for polynomial synthesis using Graph Neural Networks and PPO algorithms, cancer modeling for CAR T-cell therapy optimization, and cutting-edge machine learning research including deep learning and adversarial ML techniques for understanding complex biological systems and developing robust AI solutions.</p>
+                    
+                    <p>When I'm not working on cutting-edge research or building rockets, you can find me playing competitive tennis at UW or dominating board games (especially Monopoly - I haven't lost in years!). I love collaborating with others and exploring new technologies.</p>
+                </div>
+                <div class="skills">
+                    <h3>Skills & Expertise</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Reinforcement Learning</span>
+                        <span class="skill-tag">Graph Neural Networks</span>
+                        <span class="skill-tag">PPO Algorithms</span>
+                        <span class="skill-tag">Monte Carlo Tree Search</span>
+                        <span class="skill-tag">Deep Learning</span>
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Cancer Research</span>
+                        <span class="skill-tag">Mathematical Optimization</span>
+                        <span class="skill-tag">Polynomial Synthesis</span>
+                        <span class="skill-tag">SAP Cloud Solutions</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Web Applications</span>
+                        <span class="skill-tag">Data Pipelines</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">TensorFlow</span>
+                        <span class="skill-tag">MATLAB</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">R</span>
+                        <span class="skill-tag">SQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Experience</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Research Assistant</h3>
+                        <h4>Math AI Lab, University of Washington - Seattle, WA</h4>
+                        <p class="timeline-date">September 2025 - Present</p>
+                        <p>Designed a reinforcement learning framework with Proximal Policy Optimization (PPO) and Graph Neural Networks to synthesize efficient arithmetic circuits for polynomials. Achieved ~70% success rate on degree-3 polynomials using curriculum learning, symbolic verification, and shaped reward functions. Currently scaling framework to higher-degree polynomials and integrating Monte Carlo Tree Search (MCTS) for training efficiency.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Cloud & Digital SAP Intern</h3>
+                        <h4>PricewaterhouseCoopers - Seattle, WA</h4>
+                        <p class="timeline-date">June - August 2025</p>
+                        <p>Engineered high-performance Python pipelines for large-scale data ingestion, applying vectorization, parallel I/O, and memory-efficient batching concepts from scientific computing to reduce processing latency. Designed and deployed a secure, self-service web application enabling cross-functional teams to configure, trigger, and monitor automated workflows without technical overhead.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Data Scientist Intern</h3>
+                        <h4>Fred Hutch - Seattle, WA</h4>
+                        <p class="timeline-date">August 2024 - Present</p>
+                        <p>Developed mathematical models based on systems of ODEs to simulate CAR T-cell and tumor interactions using parameter sets from B-ALL patient data. Applied linear regression and MSE loss to train models predicting therapy outcomes and assess treatment plan efficacy.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Machine Learning Intern</h3>
+                        <h4>Naval Surface Warfare Center - Bellevue, WA</h4>
+                        <p class="timeline-date">October - December 2024</p>
+                        <p>Developed a reinforcement learning framework using DDPG agents in MATLAB and Simulink to optimize aerodynamic efficiency in axial turbomachinery. Simulated complex physical dynamics with embedded control loops and reward functions targeting lift, drag, and energy efficiency tradeoffs.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Machine Learning Intern</h3>
+                        <h4>MINDCO LABS - Seattle, WA</h4>
+                        <p class="timeline-date">September - December 2024</p>
+                        <p>Designed and implemented an advanced real-time eye-tracking system for non-invasive brain-computer-interface to map gaze to on-screen word location. Integrated gaze tracking with EEG headset signals to support a deep learning pipeline aiming to decode cognitive signals into textual output.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Project Manager Intern</h3>
+                        <h4>NASA L'SPACE - Bellevue, WA</h4>
+                        <p class="timeline-date">May - August 2024</p>
+                        <ul>
+                            <li>Contributed to the L’SPACE Lucy and Artemis missions, focusing on robotic surface reconnaissance.</li>
+                            <li>Led a team of 11 to develop a robotic lunar ice mapping system for the South Pole’s Permanently Shadowed Regions.</li>
+                            <li>Managed budget and timeline for the comprehensive design and planning process, including engineering, programmatics, and outreach.</li>
+                            <li>Coordinated efforts for a Preliminary Design Review, ensuring project milestones were met.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>Lead Engineer</h3>
+                        <h4>Society of Advanced Rocket Propulsion - Seattle, WA</h4>
+                        <p class="timeline-date">October 2022 - June 2024</p>
+                        <p>Engineered ARES: a GPS-guided rocket recovery system with autonomous drogue deployment logic and fail-safe mechanisms for high-altitude reentry. Built a real-time telemetry pipeline in C++ and Python to acquire, process, and transmit GPS and flight data from onboard microcontrollers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Research Projects</h2>
+                <p class="section-subtitle">Recent work plus two in-progress papers</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Reinforcement Learning for Polynomials</h3>
+                    <p>Designed a reinforcement learning framework with PPO and Graph Neural Networks to synthesize efficient arithmetic circuits for polynomials. Achieved ~70% success rate on degree-3 polynomials using curriculum learning and symbolic verification. Currently scaling to higher-degree polynomials and integrating MCTS.</p>
+                    <span class="project-status">In Progress - Preparing for ICLR/ICML/NeurIPS submission</span>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3>ThinkSwitch: Context-Distilled Dual-Mode LoRAs</h3>
+                    <p>Developed a dual-mode LLM training framework that alternates between low-compute "instruct" and high-compute "thinking" modes. Uses context distillation, LoRA deltas, and MergeKit blending to iteratively boost reasoning on software engineering tasks.</p>
+                    <span class="project-status">In Progress</span>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <h3>Cancer Modeling Research</h3>
+                    <p>Mathematical analysis of the Birth-Death model of Oncostreams in Glioma using advanced computational methods. Published research contributing to understanding cancer progression and treatment strategies.</p>
+                    <a href="https://arxiv.org/abs/2407.10983" class="project-link" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> View Paper
+                    </a>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Machine Learning Backdoor Research</h3>
+                    <p>Research on undetectable checksum-triggered backdoors in MLPs trained on MNIST, achieving stealth misclassification with advanced cryptographic methods and adversarial ML techniques.</p>
+                    <a href="https://drive.google.com/file/d/1V_9-0oTqYPZiQl4nhkCybbh8S508Y4Dq/view?usp=sharing" class="project-link" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> View Research Poster
+                    </a>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>TD-MPC2 Policy Distillation</h3>
+                    <p>We investigated whether the model-based planning process of TD-MPC2 could be effectively distilled into a policy network via DAgger, training large-scale fully connected neural networks to imitate planning behavior without performing online trajectory sampling.</p>
+                    <a href="https://drive.google.com/file/d/1R0qSwleil2hdmC4ecqo7-N7GQLzDQZV5/view?usp=sharing" class="project-link" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> View Research Paper
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hackathon Projects Section -->
+    <section id="hackathons" class="hackathons">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Hackathon Projects</h2>
+                <p class="section-subtitle">Interactive builds with real-world impact</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card hackathon-card">
+                    <div class="project-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Husky Maps</h3>
+                    <p>Campus routing app that finds faster, accessibility-friendly paths through buildings and shortcuts to cut walking time. Built with a focus on intuitive UI and real-world commuter feedback.</p>
+                    <div class="project-meta">
+                        <span class="project-status award">2nd Place — Anthropic Claude Hackathon</span>
+                        <a href="https://devpost.com/software/husky-maps" class="project-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> View on Devpost
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card hackathon-card">
+                    <div class="project-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>BloomSync AI</h3>
+                    <p>AI-guided bioinformatics pipeline that proposes FT/TFL1 gene edits to enable new-wood fruiting and robotics-ready orchards. Aggregates genomics data, aligns flowering genes, and uses RL with a neural reward model to score edits.</p>
+                    <div class="project-meta">
+                        <span class="project-status award">2nd Place — DubHacks</span>
+                        <a href="https://devpost.com/software/bloomsync-ai" class="project-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> View on Devpost
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="publications">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Publications</h2>
+            </div>
+            <div class="publications-grid">
+                <div class="publication-card">
+                    <h3>
+                        <a href="https://arxiv.org/abs/2512.06243" target="_blank">Quantization Blindspots: How Model Compression Breaks Backdoor Defenses</a>
+                    </h3>
+                    <p class="pub-meta">arXiv:2512.06243 — cs.LG, cs.CR</p>
+                    <p class="pub-abstract">Systematic empirical study of five representative backdoor defenses across three precision settings (FP32, INT8, INT4) on vision benchmarks. We observe that INT8 quantization reduces detection rates to 0% while leaving attack success rates above 99%, exposing a critical mismatch between defense evaluation and real-world deployment.</p>
+                </div>
+
+                <div class="publication-card">
+                    <h3>
+                        <a href="https://arxiv.org/abs/2407.10983" target="_blank">Analyzing the birth-death model of Oncostreams in Glioma, and the effects of Cytochalasin D treatment</a>
+                    </h3>
+                    <p class="pub-meta">arXiv:2407.10983 — q-bio.TO, math.PR</p>
+                    <p class="pub-abstract">Models oncostream cell populations using a birth-death process to analyze glioma aggressiveness and treatment effects (Cytochalasin D). Integrates ex-vivo/in-vivo imaging and Kolmogorov equations to predict population changes under treatment.</p>
+                </div>
+
+                <div class="publication-card">
+                    <h3>
+                        <a href="https://arxiv.org/abs/2402.07934" target="_blank">The Möbius function of the poset of triangular numbers under divisibility</a>
+                    </h3>
+                    <p class="pub-meta">arXiv:2402.07934 — math.NT</p>
+                    <p class="pub-abstract">Analyzes the Möbius function on the poset of triangular numbers under divisibility; introduces Hasse diagrams, zeta and Möbius matrices, and conjectures about asymptotic behavior, supported by visualizations and experiments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle contact-intro">I love to meet new people and collaborate on exciting projects. Feel free to reach out!</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <a href="mailto:rpande@uw.edu">rpande@uw.edu</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <h3>LinkedIn</h3>
+                    <a href="https://www.linkedin.com/in/rohanpandeymath/" target="_blank">Connect with me</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3>GitHub</h3>
+                    <a href="https://github.com/Rohan-Pandey1729/" target="_blank">View my work</a>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>Resume</h3>
+                    <a href="resume.pdf" target="_blank">Download Updated PDF</a>
+                </div>
+            </div>
+            
+            <div class="contact-cta">
+                <p>Interested in collaborating on a project or just want to chat about research, rockets, or Monopoly strategies?</p>
+                <a href="mailto:rpande@uw.edu" class="btn btn-primary">Send me a message</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Rohan Pandey. Built with passion for science and technology.</p>
+        </div>
+    </footer>
+
+    <!-- Custom cursor -->
+    <div class="cursor"></div>
+</body>
+</html> 

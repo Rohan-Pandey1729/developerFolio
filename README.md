@@ -5,18 +5,18 @@ A beautiful, modern, and responsive personal portfolio website showcasing my wor
 ## 🌟 Features
 
 ### Visual Design
-- **Modern Gradient Design**: Beautiful purple-blue gradient theme
-- **Smooth Animations**: Scroll-triggered animations and hover effects
-- **Custom Cursor**: Interactive custom cursor with hover effects
-- **Floating Cards**: Animated floating cards in the hero section
-- **Glass Morphism**: Backdrop blur effects and transparent elements
+- **3D Interactive Hero**: Central 3D cube (Three.js) — rotate with mouse/touch and **click a face** to jump to that section (About, Experience, Projects, Hackathons, Publications, Contact).
+- **Modern Gradient Design**: Pink–magenta gradient theme with glassmorphism.
+- **Custom Cursor**: Interactive custom cursor with hover effects.
+- **Contact Form**: Visitors can send you a message directly on the site; messages go to your email via [Formspree](https://formspree.io).
 
 ### Sections
-1. **Hero Section**: Eye-catching introduction with animated elements
-2. **About**: Personal background and skills showcase
-3. **Experience**: Timeline-based experience display
-4. **Projects**: Featured projects with interactive cards
-5. **Contact**: Multiple contact methods with hover effects
+1. **Hero**: 3D cube + name and “Click a face to explore”.
+2. **About**: Personal background and skills.
+3. **Experience**: Timeline-based experience.
+4. **Projects**: Research and hackathon projects.
+5. **Publications**: Papers and preprints.
+6. **Contact**: Email, LinkedIn, GitHub, Resume + **contact form** (Formspree).
 
 ### Technical Features
 - **Responsive Design**: Fully responsive across all devices
@@ -30,9 +30,10 @@ A beautiful, modern, and responsive personal portfolio website showcasing my wor
 
 - **HTML5**: Semantic markup
 - **CSS3**: Modern styling with gradients, animations, and responsive design
-- **JavaScript (ES6+)**: Interactive features and animations
-- **Font Awesome**: Icons for visual elements
-- **Google Fonts**: Inter font family for modern typography
+- **JavaScript (ES6+)**: Interactive features, form handling, smooth scroll.
+- **Three.js**: 3D cube with OrbitControls and raycasting for face clicks.
+- **Formspree**: Contact form submissions to your email (no backend needed).
+- **Font Awesome** & **Google Fonts (Inter)**.
 
 ## 📱 Responsive Design
 
@@ -62,13 +63,24 @@ The website is fully responsive and optimized for:
 ## 📂 File Structure
 
 ```
-website/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles and animations
-├── script.js           # JavaScript functionality
+developerFolio/
+├── index.html          # Main HTML + contact form (Formspree action)
+├── styles.css          # CSS (hero overlay, 3D container, contact form)
+├── script.js           # Nav, smooth scroll, form submit handler
+├── three-scene.js      # Three.js 3D cube + raycasting
 ├── resume.pdf          # Resume file
 └── README.md           # This file
 ```
+
+## 📧 Contact form (Formspree)
+
+Messages from the contact form are sent to **rpande.1729@gmail.com**. To enable this:
+
+1. Go to [formspree.io](https://formspree.io) and sign up (free).
+2. Create a new form and set the email to **rpande.1729@gmail.com**.
+3. Copy your form ID (e.g. `mnqwezkl`).
+4. In `index.html`, find the form and replace `YOUR_FORM_ID` in the `action` URL:
+   `action="https://formspree.io/f/YOUR_FORM_ID"` → `action="https://formspree.io/f/mnqwezkl"` (your ID).
 
 ## 🔧 Customization
 
@@ -107,7 +119,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 📞 Contact
 
-- **Email**: rpande@uw.edu
+- **Email**: rpande.1729@gmail.com
 - **LinkedIn**: [Rohan Pandey](https://www.linkedin.com/in/rohanpandeymath/)
 - **GitHub**: [Rohan-Pandey1729](https://github.com/Rohan-Pandey1729/)
 

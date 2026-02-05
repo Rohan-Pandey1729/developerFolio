@@ -25,11 +25,13 @@
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     // Smooth scroll for anchor links (offset for fixed header)
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    var baseUrl = 'https://rohan-pandey1729.github.io/developerFolio';
+    document.querySelectorAll('a[href^="#"], a[href^="' + baseUrl + '"]').forEach(function (a) {
         a.addEventListener('click', function (e) {
             var href = this.getAttribute('href');
             if (href === '#') return;
-            var target = document.querySelector(href);
+            var hash = href.indexOf('#') !== -1 ? href.split('#')[1] : null;
+            var target = hash ? document.querySelector('#' + hash) : null;
             if (target) {
                 e.preventDefault();
                 var y = target.getBoundingClientRect().top + window.scrollY - 70;

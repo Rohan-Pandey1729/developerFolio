@@ -1,13 +1,44 @@
 (function () {
     'use strict';
 
+    // Text scramble effect
+    function scrambleText(el, finalText) {
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·×#@%';
+        var duration = 1400;
+        var start = null;
+        function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            var revealed = Math.floor(progress * finalText.length);
+            var output = '';
+            for (var i = 0; i < finalText.length; i++) {
+                if (i < revealed || finalText[i] === ' ') {
+                    output += finalText[i];
+                } else {
+                    output += chars[Math.floor(Math.random() * chars.length)];
+                }
+            }
+            el.textContent = output;
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = finalText;
+        }
+        requestAnimationFrame(step);
+    }
+
     // Loader — rocket blast-off, then fade in portfolio. Always enable clicks.
     function finishLoading() {
+        if (document.body.classList.contains('loaded')) return;
         document.body.classList.add('loaded');
         var loaderEl = document.getElementById('loader');
         if (loaderEl) {
             loaderEl.classList.add('done');
             setTimeout(function () { loaderEl.remove(); }, 800);
+        }
+        // Trigger hero label scramble after fade-in
+        var heroLabel = document.querySelector('.hero-label');
+        if (heroLabel) {
+            var finalText = heroLabel.textContent.trim();
+            setTimeout(function () { scrambleText(heroLabel, finalText); }, 450);
         }
     }
 
@@ -42,29 +73,14 @@
 
     // Custom cursor (desktop only)
     var cursor = document.querySelector('.cursor');
-    var cursorDot = cursor && cursor.querySelector('.cursor-dot');
-    var cursorRing = cursor && cursor.querySelector('.cursor-ring');
+    var cursorDot = document.querySelector('.cursor-dot');
     var hoverTargets = 'a, button, [role="button"], input, textarea, .btn';
 
-    if (cursor && cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
-        var mouseX = 0, mouseY = 0;
-        var ringX = 0, ringY = 0;
-
+    if (cursor && cursorDot && window.matchMedia('(pointer: fine)').matches) {
         document.addEventListener('mousemove', function (e) {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
         });
-
-        function animateRing() {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
-            cursorRing.style.left = ringX + 'px';
-            cursorRing.style.top = ringY + 'px';
-            requestAnimationFrame(animateRing);
-        }
-        animateRing();
 
         document.querySelectorAll(hoverTargets).forEach(function (el) {
             el.addEventListener('mouseenter', function () { cursor.classList.add('hover'); });
@@ -167,6 +183,47 @@
         document.querySelectorAll('.nav-link').forEach(function (link) {
             link.addEventListener('click', function () {
                 nav.classList.remove('open');
+            });
+        });
+    }
+
+    // Scroll progress bar
+    var progressBar = document.getElementById('scroll-progress');
+    if (progressBar) {
+        window.addEventListener('scroll', function () {
+            var total = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+        }, { passive: true });
+    }
+
+    // Card 3D tilt (desktop only)
+    if (window.matchMedia('(pointer: fine)').matches) {
+        document.querySelectorAll('.hackathon-card, .publications-card').forEach(function (card) {
+            card.addEventListener('mousemove', function (e) {
+                var rect = card.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+                var rotY = ((x / rect.width) - 0.5) * 14;
+                var rotX = -((y / rect.height) - 0.5) * 10;
+                card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+                card.style.transform = 'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.transition = '';
+                card.style.transform = '';
+            });
+        });
+
+        // Magnetic nav links
+        document.querySelectorAll('.nav-link').forEach(function (link) {
+            link.addEventListener('mousemove', function (e) {
+                var rect = link.getBoundingClientRect();
+                var dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18;
+                var dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
+                link.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+            });
+            link.addEventListener('mouseleave', function () {
+                link.style.transform = '';
             });
         });
     }

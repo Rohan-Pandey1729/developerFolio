@@ -154,6 +154,19 @@ body.loaded .cursor {
     body { cursor: auto; }
 }
 
+/* Scroll progress bar */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    z-index: 200;
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
 .wrap {
     max-width: 920px;
     margin: 0 auto;
@@ -167,7 +180,6 @@ body.loaded .cursor {
     left: 0;
     z-index: 9999;
     pointer-events: none;
-    mix-blend-mode: difference;
 }
 
 @media (pointer: coarse) {
@@ -176,34 +188,18 @@ body.loaded .cursor {
 
 .cursor-dot {
     position: fixed;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background: var(--accent);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s ease-out;
+    transition: transform 0.12s ease-out, opacity 0.12s ease-out;
+    box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .cursor.hover .cursor-dot {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.8;
-}
-
-.cursor-ring {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease-out, height 0.2s ease-out, border-color 0.2s, opacity 0.2s;
-}
-
-.cursor.hover .cursor-ring {
-    width: 56px;
-    height: 56px;
-    border-color: var(--accent-soft);
-    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0.85;
 }
 
 /* Header + nav underline */
@@ -268,7 +264,7 @@ body.loaded .cursor {
     font-weight: 500;
     padding: 0.5rem 0.75rem;
     border-radius: 8px;
-    transition: color 0.2s, background 0.2s;
+    transition: color 0.2s, background 0.2s, transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .nav-link:hover,
@@ -504,6 +500,14 @@ body.loaded .cursor {
     color: #fff;
     position: relative;
     display: inline-block;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section-title-line {

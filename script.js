@@ -4,10 +4,17 @@
     // Text scramble effect
     function scrambleText(el, finalText) {
         var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·×#@%';
-        var duration = 1400;
+        var duration = 3200;
+        var frameInterval = 45; // ms between scramble updates — keeps each state visible
         var start = null;
+        var lastFrame = null;
         function step(ts) {
             if (!start) start = ts;
+            if (lastFrame !== null && ts - lastFrame < frameInterval) {
+                requestAnimationFrame(step);
+                return;
+            }
+            lastFrame = ts;
             var progress = Math.min((ts - start) / duration, 1);
             var revealed = Math.floor(progress * finalText.length);
             var output = '';
@@ -71,22 +78,6 @@
         });
     });
 
-    // Custom cursor (desktop only)
-    var cursor = document.querySelector('.cursor');
-    var cursorDot = document.querySelector('.cursor-dot');
-    var hoverTargets = 'a, button, [role="button"], input, textarea, .btn';
-
-    if (cursor && cursorDot && window.matchMedia('(pointer: fine)').matches) {
-        document.addEventListener('mousemove', function (e) {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-        });
-
-        document.querySelectorAll(hoverTargets).forEach(function (el) {
-            el.addEventListener('mouseenter', function () { cursor.classList.add('hover'); });
-            el.addEventListener('mouseleave', function () { cursor.classList.remove('hover'); });
-        });
-    }
 
     // Nav underline position (scrollspy + underline)
     var navLinks = document.querySelectorAll('.nav-link');

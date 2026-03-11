@@ -7,35 +7,37 @@ A beautiful, modern, and responsive personal portfolio website showcasing my wor
 ## 🌟 Features
 
 ### Visual Design
-- **3D Interactive Hero**: Central 3D cube (Three.js) — rotate with mouse/touch and **click a face** to jump to that section (About, Experience, Projects, Hackathons, Publications, Contact).
-- **Modern Gradient Design**: Pink–magenta gradient theme with glassmorphism.
+- **Rocket loader**: Blast-off loading screen with a smooth fade-in.
+- **Modern dark theme**: Warm navy + amber palette with subtle glass effects.
 - **Custom Cursor**: Interactive custom cursor with hover effects.
+- **Subtle background flair**: Lightweight animated starfield canvas in the hero.
 - **Contact Form**: Visitors can send you a message directly on the site; messages go to your email via [Formspree](https://formspree.io).
+- **Spotlight modal**: Click hackathon cards to open quick details + links.
+- **Case studies**: Dedicated pages under `case-studies/` for deeper writeups.
 
 ### Sections
-1. **Hero**: 3D cube + name and “Click a face to explore”.
-2. **About**: Personal background and skills.
-3. **Experience**: Timeline-based experience.
-4. **Projects**: Research and hackathon projects.
-5. **Publications**: Papers and preprints.
-6. **Contact**: Email, LinkedIn, GitHub, Resume + **contact form** (Formspree).
+1. **Hero**
+2. **Now** (status widget)
+3. **About**
+4. **Experience** (expandable timeline)
+5. **Hackathons** (case studies + spotlight)
+6. **Publications** (links out)
+7. **Contact** (links + Formspree)
 
 ### Technical Features
 - **Responsive Design**: Fully responsive across all devices
 - **Mobile Navigation**: Hamburger menu for mobile devices
 - **Smooth Scrolling**: Smooth navigation between sections
 - **Intersection Observer**: Performance-optimized scroll animations
-- **Typing Effect**: Animated text typing in hero section
-- **Parallax Effects**: Subtle parallax scrolling effects
+- **Scroll progress bar**: Top progress indicator
 
 ## 🚀 Technologies Used
 
 - **HTML5**: Semantic markup
 - **CSS3**: Modern styling with gradients, animations, and responsive design
 - **JavaScript (ES6+)**: Interactive features, form handling, smooth scroll.
-- **Three.js**: 3D cube with OrbitControls and raycasting for face clicks.
 - **Formspree**: Contact form submissions to your email (no backend needed).
-- **Font Awesome** & **Google Fonts (Inter)**.
+- **Font Awesome** & **Google Fonts**.
 
 ## 📱 Responsive Design
 
@@ -67,9 +69,9 @@ The website is fully responsive and optimized for:
 ```
 developerFolio/
 ├── index.html          # Main HTML + contact form (Formspree action)
-├── styles.css          # CSS (hero overlay, 3D container, contact form)
-├── script.js           # Nav, smooth scroll, form submit handler
-├── three-scene.js      # Three.js 3D cube + raycasting
+├── styles.css          # Styling (theme, modal, timeline, etc.)
+├── script.js           # UI interactions (loader, flair, modal, form, etc.)
+├── case-studies/       # Mini case-study pages
 ├── resume.pdf          # Resume file
 └── README.md           # This file
 ```
@@ -83,6 +85,26 @@ Messages from the contact form are sent to **rpande.1729@gmail.com**. To enable 
 3. Copy your form ID (e.g. `mnqwezkl`).
 4. In `index.html`, find the form and replace `YOUR_FORM_ID` in the `action` URL:
    `action="https://formspree.io/f/YOUR_FORM_ID"` → `action="https://formspree.io/f/mnqwezkl"` (your ID).
+
+## 📈 Analytics (optional)
+
+If you want privacy-friendly analytics, these are the easiest drop-in options.
+
+### Option A: Plausible
+
+Add this to `index.html` in `<head>` (replace `data-domain` with your value):
+
+```html
+<script defer data-domain="rohan-pandey1729.github.io" src="https://plausible.io/js/script.js"></script>
+```
+
+### Option B: Umami
+
+Add this to `index.html` in `<head>`:
+
+```html
+<script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR_UMAMI_WEBSITE_ID"></script>
+```
 
 ## 🔧 Customization
 

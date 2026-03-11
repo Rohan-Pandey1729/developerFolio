@@ -6,10 +6,17 @@
     <title>Rohan Pandey — Research Scientist & ML Engineer</title>
     <meta name="description" content="Research Scientist and Machine Learning Engineer. ML, mathematics & computational biology.">
     <link rel="stylesheet" href="styles.css">
+    <!-- Optional analytics (privacy-friendly). See README. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Plausible example:
+    <script defer data-domain="rohan-pandey1729.github.io" src="https://plausible.io/js/script.js"></script>
+    -->
+    <!-- Umami example:
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR_UMAMI_WEBSITE_ID"></script>
+    -->
 </head>
 <body>
     <div id="scroll-progress" aria-hidden="true"></div>
@@ -67,6 +74,7 @@
         <section id="hero" class="hero">
             <div class="hero-bg" aria-hidden="true"></div>
             <div class="hero-noise" aria-hidden="true"></div>
+            <canvas id="bg-flair" class="bg-flair" aria-hidden="true"></canvas>
             <div class="wrap hero-wrap">
                 <p class="hero-label">Research Scientist & ML Engineer</p>
                 <h1 class="hero-title"><span class="hero-title-gradient hero-title-script">Rohan Pandey</span></h1>
@@ -77,6 +85,38 @@
                 </div>
             </div>
             <div class="scroll-cue" aria-hidden="true"></div>
+        </section>
+
+        <section id="now" class="section section-alt now">
+            <div class="wrap">
+                <h2 class="section-title"><span class="section-title-line"></span>Now</h2>
+                <div class="now-grid">
+                    <div class="now-card reveal">
+                        <div class="now-top">
+                            <div class="now-status">
+                                <span class="status-dot" aria-hidden="true"></span>
+                                <span class="status-text">Available for collaborations</span>
+                            </div>
+                            <div class="now-time" id="now-time" aria-label="Current local time"></div>
+                        </div>
+                        <ul class="now-list">
+                            <li><strong>Building</strong> at DigitalOcean — cloud infrastructure & developer tools</li>
+                            <li><strong>Research</strong> in RL + symbolic systems (GNNs, PPO, verification)</li>
+                            <li><strong>Exploring</strong> EEG/NeuroAI visualization and realtime systems</li>
+                        </ul>
+                        <div class="now-actions">
+                            <a class="btn btn-ghost btn-small" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+                            <a class="btn btn-primary btn-small" href="https://rohan-pandey1729.github.io/developerFolio/#contact">Contact</a>
+                        </div>
+                    </div>
+                    <div class="now-mini reveal">
+                        <div class="now-mini-row"><span>Location</span><span>Seattle, WA</span></div>
+                        <div class="now-mini-row"><span>Timezone</span><span>America/Los_Angeles</span></div>
+                        <div class="now-mini-row"><span>Currently</span><span>BS/MS ACMS @ UW</span></div>
+                        <div class="now-mini-row"><span>Focus</span><span>RL · Systems · Bio/NeuroAI</span></div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="about" class="section">
@@ -109,42 +149,116 @@
             <div class="wrap">
                 <h2 class="section-title"><span class="section-title-line"></span>Experience</h2>
                 <div class="timeline">
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Software Engineer II</strong> · DigitalOcean · Mar 2026 – Present</div>
-                        <p>Building and scaling cloud infrastructure and developer tools at DigitalOcean.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Research Assistant</strong> · Math AI Lab, UW · Sep 2025 – Present</div>
-                        <p>RL framework (PPO + GNNs) for polynomial arithmetic circuits; curriculum learning, symbolic verification, MCTS.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>ML Engineer</strong> · Mercor · Dec 2025 – Mar 2026</div>
-                        <p>End-to-end ML pipeline for text sentiment; fine-tuned transformers, model selection, inference automation.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Cloud & Digital SAP Intern</strong> · PwC · Jun – Aug 2025</div>
-                        <p>High-performance Python data pipelines; self-service web app for workflow automation.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Data Scientist Intern</strong> · Fred Hutch · Aug 2024 – Jan 2026</div>
-                        <p>ODE-based CAR T-cell & tumor models; linear regression / MSE for therapy outcome prediction.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>ML Intern</strong> · Naval Surface Warfare Center · Oct – Dec 2024</div>
-                        <p>DDPG in MATLAB/Simulink for turbomachinery efficiency; reward design for lift/drag/energy.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>ML Intern</strong> · MINDCO LABS · Sep – Dec 2024</div>
-                        <p>Real-time eye-tracking for BCI; gaze + EEG pipeline for cognitive signal decoding.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Project Manager Intern</strong> · NASA L'SPACE · May – Aug 2024</div>
-                        <p>Lucy & Artemis; led team of 11 on lunar ice mapping rover; PDR, budget, programmatics.</p>
-                    </div>
-                    <div class="timeline-item reveal">
-                        <div class="timeline-meta"><strong>Lead Engineer</strong> · SARP · Oct 2022 – Jun 2024</div>
-                        <p>ARES: GPS-guided recovery, drogue logic, telemetry in C++/Python.</p>
-                    </div>
+                    <details class="timeline-item reveal" open>
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Software Engineer II</strong> · DigitalOcean</span>
+                            <span class="timeline-summary-dates">Mar 2026 – Present</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>Building and scaling cloud infrastructure and developer tools at DigitalOcean.</p>
+                            <ul>
+                                <li>Systems design, reliability, and performance work across production services</li>
+                                <li>Developer experience improvements: APIs, tooling, and automation</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Research Assistant</strong> · Math AI Lab, UW</span>
+                            <span class="timeline-summary-dates">Sep 2025 – Present</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>RL framework (PPO + GNNs) for polynomial arithmetic circuits; curriculum learning, symbolic verification, and search.</p>
+                            <ul>
+                                <li>Designed environments and reward shaping for symbolic synthesis tasks</li>
+                                <li>Integrated verification to keep policies grounded in correctness</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>ML Engineer</strong> · Mercor</span>
+                            <span class="timeline-summary-dates">Dec 2025 – Mar 2026</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>End-to-end ML pipeline for text sentiment; fine-tuned transformers, model selection, and inference automation.</p>
+                            <ul>
+                                <li>Owned evaluation harness, model selection, and rollout workflow</li>
+                                <li>Improved inference reliability and reduced manual ops overhead</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Cloud &amp; Digital SAP Intern</strong> · PwC</span>
+                            <span class="timeline-summary-dates">Jun – Aug 2025</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>High-performance Python data pipelines; self-service web app for workflow automation.</p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Data Scientist Intern</strong> · Fred Hutch</span>
+                            <span class="timeline-summary-dates">Aug 2024 – Jan 2026</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>ODE-based CAR T-cell &amp; tumor models; linear regression / MSE for therapy outcome prediction.</p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>ML Intern</strong> · Naval Surface Warfare Center</span>
+                            <span class="timeline-summary-dates">Oct – Dec 2024</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>DDPG in MATLAB/Simulink for turbomachinery efficiency; reward design for lift/drag/energy.</p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>ML Intern</strong> · MINDCO LABS</span>
+                            <span class="timeline-summary-dates">Sep – Dec 2024</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>Real-time eye-tracking for BCI; gaze + EEG pipeline for cognitive signal decoding.</p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Project Manager Intern</strong> · NASA L'SPACE</span>
+                            <span class="timeline-summary-dates">May – Aug 2024</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>Lucy &amp; Artemis; led team of 11 on lunar ice mapping rover; PDR, budget, programmatics.</p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Lead Engineer</strong> · SARP</span>
+                            <span class="timeline-summary-dates">Oct 2022 – Jun 2024</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>ARES: GPS-guided recovery, drogue logic, telemetry in C++/Python.</p>
+                        </div>
+                    </details>
                 </div>
             </div>
         </section>
@@ -154,7 +268,7 @@
                 <h2 class="section-title"><span class="section-title-line"></span>Hackathons</h2>
                 <p class="section-sub reveal">Builds with real-world impact.</p>
                 <div class="hackathon-grid">
-                    <a href="https://devpost.com/software/husky-maps" class="hackathon-card reveal" target="_blank" rel="noopener">
+                    <a href="/developerFolio/case-studies/husky-maps/" class="hackathon-card reveal" data-spotlight="husky-maps">
                         <span class="bento-glow" aria-hidden="true"></span>
                         <div class="hackathon-card-body">
                             <h3 class="card-title">Husky Maps</h3>
@@ -162,11 +276,11 @@
                             <span class="card-award">Winner — UW Claude Hackathon 2025</span>
                         </div>
                         <div class="hackathon-card-footer">
-                            <span>View on Devpost</span>
+                            <span>Open case study</span>
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </a>
-                    <a href="https://devpost.com/software/bloomsync-ai" class="hackathon-card reveal" target="_blank" rel="noopener">
+                    <a href="/developerFolio/case-studies/bloomsync-ai/" class="hackathon-card reveal" data-spotlight="bloomsync-ai">
                         <span class="bento-glow" aria-hidden="true"></span>
                         <div class="hackathon-card-body">
                             <h3 class="card-title">BloomSync AI</h3>
@@ -174,11 +288,11 @@
                             <span class="card-award">2nd Place — DubHacks</span>
                         </div>
                         <div class="hackathon-card-footer">
-                            <span>View on Devpost</span>
+                            <span>Open case study</span>
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </a>
-                    <a href="https://rohan-pandey1729.github.io/NeuroAIHackathon/" class="hackathon-card reveal" target="_blank" rel="noopener">
+                    <a href="/developerFolio/case-studies/neuraltrace/" class="hackathon-card reveal" data-spotlight="neuraltrace">
                         <span class="bento-glow" aria-hidden="true"></span>
                         <div class="hackathon-card-body">
                             <h3 class="card-title">NeuralTrace</h3>
@@ -186,10 +300,11 @@
                             <span class="card-award">Top project — NeuroAI Hackathon</span>
                         </div>
                         <div class="hackathon-card-footer">
-                            <span>View live demo</span>
+                            <span>Open case study</span>
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </a>
+                </div>
             </div>
         </section>
 
@@ -244,6 +359,22 @@
             <a href="https://rohan-pandey1729.github.io/publications/">Publications</a>
         </div>
     </footer>
+
+    <div id="spotlight" class="spotlight" aria-hidden="true">
+        <div class="spotlight-backdrop" data-spotlight-close></div>
+        <div class="spotlight-dialog" role="dialog" aria-modal="true" aria-labelledby="spotlight-title">
+            <button type="button" class="spotlight-close" aria-label="Close" data-spotlight-close>
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="spotlight-content">
+                <div class="spotlight-kicker" id="spotlight-kicker"></div>
+                <h3 class="spotlight-title" id="spotlight-title"></h3>
+                <p class="spotlight-desc" id="spotlight-desc"></p>
+                <div class="spotlight-tags" id="spotlight-tags" aria-label="Tech stack"></div>
+                <div class="spotlight-links" id="spotlight-links"></div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

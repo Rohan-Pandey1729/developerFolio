@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>NeuralTrace — Case Study</title>
+  <meta name="description" content="NeuralTrace — Real-time EEG learning visualizer. Case study." />
+  <link rel="stylesheet" href="/developerFolio/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="loaded">
+  <header class="header">
+    <div class="header-inner">
+      <a href="/developerFolio/" class="logo">RP</a>
+      <nav class="nav">
+        <a href="/developerFolio/#hackathons" class="nav-link active">Back to Hackathons</a>
+      </nav>
+      <a href="/developerFolio/resume.pdf" class="btn btn-nav" target="_blank" rel="noopener">Resume</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <div class="case-hero">
+          <div class="case-title"><span class="hero-title-gradient">NeuralTrace</span></div>
+          <p class="case-subtitle">
+            Real-time EEG learning visualizer built for the NeuroAI Hackathon — live EEG (OpenBCI) in the browser via Web Serial, a 3D brain with electrode glow, and interactive neural connection animations.
+          </p>
+          <div class="case-actions">
+            <a class="btn btn-primary" href="https://rohan-pandey1729.github.io/NeuroAIHackathon/" target="_blank" rel="noopener">
+              <i class="fa-solid fa-bolt"></i> Live demo
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/Rohan-Pandey1729/NeuroAIHackathon" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-ghost" href="/developerFolio/#contact">
+              <i class="fa-solid fa-paper-plane"></i> Contact
+            </a>
+          </div>
+        </div>
+
+        <div class="case-grid">
+          <div class="case-card">
+            <h2>What it does</h2>
+            <p>
+              NeuralTrace reads EEG signals, maps activity to International 10-20 electrode regions, and visualizes learning-related dynamics through glow intensity, waveforms, and a 3D neural animation popup when you click an electrode.
+            </p>
+            <div style="margin-top:1rem;" class="case-media" aria-hidden="true"></div>
+          </div>
+
+          <div class="case-meta">
+            <div class="case-card">
+              <h2>My role</h2>
+              <ul>
+                <li>Built interactive visualization and UI flows for exploration</li>
+                <li>Focused on realtime updates, responsiveness, and demo polish</li>
+              </ul>
+            </div>
+            <div class="case-card">
+              <h2>Stack</h2>
+              <div class="case-stack" aria-label="Tech stack">
+                <span class="chip">TypeScript</span>
+                <span class="chip">Three.js</span>
+                <span class="chip">Web Serial API</span>
+                <span class="chip">Vite</span>
+              </div>
+            </div>
+            <div class="case-card">
+              <h2>Highlights</h2>
+              <ul>
+                <li>In-browser hardware streaming (Chrome/Edge) + synthetic fallback</li>
+                <li>3D brain with click raycasting and electrode glow</li>
+                <li>Analysis in a worker to keep UI smooth</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <p>© <span id="year"></span> Rohan Pandey</p>
+      <a href="/developerFolio/">Home</a>
+    </div>
+  </footer>
+
+  <script src="/developerFolio/script.js"></script>
+</body>
+</html>
+

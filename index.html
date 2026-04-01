@@ -61,6 +61,7 @@
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#hackathons" class="nav-link">Hackathons</a>
                 <a href="#publications" class="nav-link">Publications</a>
+                <a href="#game" class="nav-link">Mission Control</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
             <a href="resume.pdf" class="btn btn-nav" target="_blank">Resume</a>
@@ -95,7 +96,7 @@
                         <div class="now-top">
                             <div class="now-status">
                                 <span class="status-dot" aria-hidden="true"></span>
-                                <span class="status-text">Available for collaborations</span>
+                                <span class="status-text">Available for research collaborations</span>
                             </div>
                             <div class="now-time" id="now-time" aria-label="Current local time"></div>
                         </div>
@@ -171,10 +172,10 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>RL framework (PPO + GNNs) for polynomial arithmetic circuits; curriculum learning, symbolic verification, and search.</p>
+                            <p>Designing a reinforcement learning framework to synthesize efficient arithmetic circuits for polynomials, achieving ~70% success on degree-m polynomials.</p>
                             <ul>
-                                <li>Designed environments and reward shaping for symbolic synthesis tasks</li>
-                                <li>Integrated verification to keep policies grounded in correctness</li>
+                                <li>PPO + GNNs with curriculum learning and symbolic verification; scaling to higher-degree synthesis with Monte Carlo Tree Search to improve sample efficiency</li>
+                                <li>Preparing open-source benchmarks and targeting submission to ICLR/ICML/NeurIPS</li>
                             </ul>
                         </div>
                     </details>
@@ -186,10 +187,10 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>End-to-end ML pipeline for text sentiment; fine-tuned transformers, model selection, and inference automation.</p>
+                            <p>Built and deployed an end-to-end ML pipeline for large-scale text sentiment analysis, enhancing prediction accuracy through strategic model selection.</p>
                             <ul>
-                                <li>Owned evaluation harness, model selection, and rollout workflow</li>
-                                <li>Improved inference reliability and reduced manual ops overhead</li>
+                                <li>Fine-tuned and evaluated transformer models on domain-specific data using custom scoring metrics</li>
+                                <li>Owned data preprocessing, model validation, and inference automation for production-ready workflows</li>
                             </ul>
                         </div>
                     </details>
@@ -201,7 +202,7 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>High-performance Python data pipelines; self-service web app for workflow automation.</p>
+                            <p>Engineered high-performance Python data pipelines leveraging vectorization and parallel I/O to reduce latency; built a secure self-service web app for automated workflow configuration and monitoring.</p>
                         </div>
                     </details>
 
@@ -212,7 +213,7 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>ODE-based CAR T-cell &amp; tumor models; linear regression / MSE for therapy outcome prediction.</p>
+                            <p>Developed mathematical models of CAR T-cell and tumor interactions using systems of ODEs trained on patient-derived B-ALL data, applying regression and loss optimization to evaluate treatment efficacy.</p>
                         </div>
                     </details>
 
@@ -223,7 +224,7 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>DDPG in MATLAB/Simulink for turbomachinery efficiency; reward design for lift/drag/energy.</p>
+                            <p>Built a reinforcement learning framework with DDPG agents in MATLAB and Simulink, optimizing aerodynamic performance on axial turbomachinery simulations under complex physical dynamics.</p>
                         </div>
                     </details>
 
@@ -234,7 +235,7 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>Real-time eye-tracking for BCI; gaze + EEG pipeline for cognitive signal decoding.</p>
+                            <p>Engineered a real-time eye-tracking system integrating EEG headset signals with deep learning to decode gaze to text, contributing to brain-computer interface (BCI) research.</p>
                         </div>
                     </details>
 
@@ -320,6 +321,16 @@
                         <span class="publications-cta-text">Open publications site <i class="fas fa-external-link-alt"></i></span>
                     </div>
                 </a>
+            </div>
+        </section>
+
+        <section id="game" class="section">
+            <div class="wrap">
+                <h2 class="section-title"><span class="section-title-line"></span>Mission Control</h2>
+                <p class="section-sub reveal">Pilot the rocket through the asteroid fields.</p>
+                <div class="game-wrap reveal">
+                    <canvas id="game-canvas" class="game-canvas" tabindex="0" aria-label="Flappy Rocket — press Space or tap to play"></canvas>
+                </div>
             </div>
         </section>
 

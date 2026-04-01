@@ -1542,3 +1542,22 @@ body.loaded .cursor {
         justify-content: center;
     }
 }
+
+/* ── Flappy Rocket game ─────────────────────────────────── */
+.game-wrap {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 48px rgba(245, 158, 11, 0.08), 0 4px 32px rgba(0, 0, 0, 0.45);
+    background: #050b15;
+    line-height: 0;
+}
+
+.game-canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 700 / 380;
+    outline: none;
+    cursor: pointer;
+}

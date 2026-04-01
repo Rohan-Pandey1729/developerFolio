@@ -503,3 +503,361 @@
         });
     }
 })();
+
+// ── Flappy Rocket mini-game ───────────────────────────────
+(function () {
+    var canvas = document.getElementById('game-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    // Logical resolution
+    var W = 700, H = 380;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.scale(dpr, dpr);
+
+    // Palette matching the site
+    var C_BG      = '#050b15';
+    var C_AMBER   = '#f59e0b';
+    var C_AMBER_S = '#fbbf24';
+    var C_TEXT    = '#e2e8f0';
+    var C_MUTED   = '#94a3b8';
+    var C_BARRIER = '#0f1825';
+
+    // Persistent best score
+    var best = +(localStorage.getItem('flr-best') || 0);
+
+    // Physics constants
+    var ROCKET_X  = 110;
+    var ROCKET_HW = 13;
+    var ROCKET_HH = 22;
+    var GRAVITY   = 0.32;
+    var THRUST    = -7.2;
+    var MAX_VY    = 9;
+    var RING_W    = 52;
+    var RING_GAP  = 158;
+
+    // Runtime state
+    var STATE, score, speed, frame;
+    var ry, rvy;
+    var rings, particles, stars;
+
+    // ── helpers ──────────────────────────────────────────
+    function rrPath(x, y, w2, h2, r2) {
+        ctx.moveTo(x + r2, y);
+        ctx.lineTo(x + w2 - r2, y);
+        ctx.arcTo(x + w2, y, x + w2, y + r2, r2);
+        ctx.lineTo(x + w2, y + h2 - r2);
+        ctx.arcTo(x + w2, y + h2, x + w2 - r2, y + h2, r2);
+        ctx.lineTo(x + r2, y + h2);
+        ctx.arcTo(x, y + h2, x, y + h2 - r2, r2);
+        ctx.lineTo(x, y + r2);
+        ctx.arcTo(x, y, x + r2, y, r2);
+        ctx.closePath();
+    }
+
+    function ctext(text, x, y, font, color, glow) {
+        ctx.save();
+        ctx.font = font;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = color;
+        if (glow) { ctx.shadowColor = glow; ctx.shadowBlur = 18; }
+        ctx.fillText(text, x, y);
+        ctx.restore();
+    }
+
+    // ── init ─────────────────────────────────────────────
+    function initStars() {
+        stars = [];
+        for (var i = 0; i < 88; i++) {
+            stars.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 1.4 + 0.2,
+                a: Math.random() * 0.5 + 0.15,
+                s: Math.random() * 0.35 + 0.08
+            });
+        }
+    }
+
+    function startGame() {
+        score = 0; speed = 2.8; frame = 0;
+        ry = H / 2; rvy = 0;
+        rings = []; particles = [];
+        STATE = 'running';
+    }
+
+    function reset() {
+        ry = H / 2; rvy = 0;
+        rings = []; particles = [];
+        score = 0; speed = 2.8; frame = 0;
+        STATE = 'idle';
+    }
+
+    // ── input ─────────────────────────────────────────────
+    function doThrust() {
+        if (STATE === 'idle' || STATE === 'dead') { startGame(); return; }
+        rvy = THRUST;
+        for (var i = 0; i < 5; i++) {
+            particles.push({
+                x: ROCKET_X - ROCKET_HH - 2, y: ry,
+                vx: -(Math.random() * 3.5 + 1.5),
+                vy: (Math.random() - 0.5) * 2.8,
+                life: 1, decay: 0.08 + Math.random() * 0.06,
+                r: 2 + Math.random() * 4
+            });
+        }
+    }
+
+    canvas.addEventListener('click', function (e) { e.preventDefault(); doThrust(); });
+    canvas.addEventListener('touchstart', function (e) { e.preventDefault(); doThrust(); }, { passive: false });
+    document.addEventListener('keydown', function (e) {
+        if (e.code !== 'Space') return;
+        var rect = canvas.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) { e.preventDefault(); doThrust(); }
+    });
+
+    // ── ring spawning & collision ─────────────────────────
+    function spawnRing() {
+        var margin = 58;
+        var gapTop = margin + Math.random() * (H - RING_GAP - margin * 2);
+        rings.push({ x: W + RING_W / 2, gapTop: gapTop, passed: false });
+    }
+
+    function hitTest() {
+        var m = 4;
+        var l = ROCKET_X - ROCKET_HH + m, r2 = ROCKET_X + ROCKET_HH - m; // HH is now along x
+        var t = ry - ROCKET_HW + m,       b  = ry + ROCKET_HW - m;        // HW is now along y
+        if (b >= H || t <= 0) return true;
+        for (var i = 0; i < rings.length; i++) {
+            var o = rings[i], rx2 = o.x - RING_W / 2;
+            if (r2 < rx2 || l > rx2 + RING_W) continue;
+            if (t < o.gapTop || b > o.gapTop + RING_GAP) return true;
+        }
+        return false;
+    }
+
+    // ── drawing ───────────────────────────────────────────
+    function drawRocket(cx, cy, tilt) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(Math.PI / 2 + tilt); // rotate 90° CW so nose points right
+        var hw = ROCKET_HW, hh = ROCKET_HH;
+
+        // Engine ambient glow
+        var eg = ctx.createRadialGradient(0, hh * 0.5, 0, 0, hh * 0.5, hw + 12);
+        eg.addColorStop(0, 'rgba(245,158,11,0.28)');
+        eg.addColorStop(1, 'rgba(245,158,11,0)');
+        ctx.fillStyle = eg;
+        ctx.fillRect(-hw - 12, -hh * 0.3, hw * 2 + 24, hh * 1.6);
+
+        // Left fin
+        ctx.fillStyle = '#94a3b8';
+        ctx.beginPath();
+        ctx.moveTo(-hw, hh * 0.3); ctx.lineTo(-hw - 9, hh * 0.78); ctx.lineTo(-hw, hh * 0.65);
+        ctx.closePath(); ctx.fill();
+
+        // Right fin
+        ctx.fillStyle = '#cbd5e1';
+        ctx.beginPath();
+        ctx.moveTo(hw, hh * 0.3); ctx.lineTo(hw + 9, hh * 0.78); ctx.lineTo(hw, hh * 0.65);
+        ctx.closePath(); ctx.fill();
+
+        // Body
+        ctx.fillStyle = '#e8ecf0';
+        ctx.beginPath(); ctx.rect(-hw, -hh * 0.62, hw * 2, hh * 1.25); ctx.fill();
+
+        // Nose cone
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.moveTo(0, -hh); ctx.lineTo(-hw, -hh * 0.42); ctx.lineTo(hw, -hh * 0.42);
+        ctx.closePath(); ctx.fill();
+
+        // Amber band
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath(); ctx.rect(-hw - 1, -hh * 0.1, hw * 2 + 2, hh * 0.16); ctx.fill();
+
+        // Window
+        ctx.fillStyle = '#0c1222';
+        ctx.beginPath(); ctx.ellipse(0, -hh * 0.08, 5.5, 7, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#334155';
+        ctx.beginPath(); ctx.ellipse(0, -hh * 0.1, 3.5, 5, 0, 0, Math.PI * 2); ctx.fill();
+
+        ctx.restore();
+    }
+
+    function drawFlame(cx, cy, tilt) {
+        // Tail is on the left side of the horizontal rocket
+        var tailX = cx - ROCKET_HH - 2;
+        var tailY = cy + Math.sin(tilt) * ROCKET_HH * 0.5;
+        var flen = 14 + Math.random() * 10;
+        ctx.save();
+        ctx.translate(tailX, tailY);
+        ctx.rotate(tilt);
+        var fg = ctx.createLinearGradient(0, 0, -flen, 0);
+        fg.addColorStop(0, 'rgba(245,158,11,0.95)');
+        fg.addColorStop(0.5, 'rgba(251,191,36,0.5)');
+        fg.addColorStop(1, 'rgba(245,158,11,0)');
+        ctx.fillStyle = fg;
+        ctx.beginPath(); ctx.ellipse(-flen / 2, 0, flen / 2, 6.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+    }
+
+    function drawBarrier(o) {
+        var rx2 = o.x - RING_W / 2;
+        var gapBottom = o.gapTop + RING_GAP;
+
+        ctx.shadowColor = C_AMBER; ctx.shadowBlur = 14;
+        ctx.strokeStyle = C_AMBER; ctx.lineWidth = 1.5;
+
+        ctx.fillStyle = C_BARRIER;
+        ctx.beginPath(); ctx.rect(rx2, 0, RING_W, o.gapTop); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.rect(rx2, gapBottom, RING_W, H - gapBottom); ctx.fill(); ctx.stroke();
+
+        ctx.shadowBlur = 0;
+
+        // Amber rim at gap edges
+        ctx.fillStyle = 'rgba(245,158,11,0.28)';
+        ctx.beginPath(); ctx.rect(rx2, o.gapTop - 4, RING_W, 4); ctx.fill();
+        ctx.beginPath(); ctx.rect(rx2, gapBottom, RING_W, 4); ctx.fill();
+    }
+
+    function drawIdleScreen() {
+        ctx.fillStyle = 'rgba(5,11,21,0.72)'; ctx.fillRect(0, 0, W, H);
+
+        // Subtle decorative border
+        ctx.save();
+        ctx.strokeStyle = 'rgba(245,158,11,0.14)'; ctx.lineWidth = 1;
+        ctx.beginPath(); rrPath(W / 2 - 130, H / 2 - 84, 260, 170, 14); ctx.stroke();
+        ctx.restore();
+
+        ctext('Flappy Rocket', W / 2, H / 2 - 60, 'bold 32px Outfit, system-ui, sans-serif', C_AMBER, C_AMBER);
+        ctext('Press Space or tap to launch', W / 2, H / 2 - 18, '16px DM Sans, system-ui, sans-serif', C_TEXT, null);
+        if (best > 0) ctext('Best: ' + best, W / 2, H / 2 + 10, '14px DM Sans, system-ui, sans-serif', C_MUTED, null);
+        ctext('Tap / click / Space to thrust  ·  dodge the asteroid fields', W / 2, H / 2 + 36, '12px DM Sans, system-ui, sans-serif', 'rgba(148,163,184,0.5)', null);
+    }
+
+    function drawDeadScreen() {
+        ctx.fillStyle = 'rgba(5,11,21,0.82)'; ctx.fillRect(0, 0, W, H);
+        ctext('Mission Failed', W / 2, H / 2 - 64, 'bold 28px Outfit, system-ui, sans-serif', '#f87171', 'rgba(248,113,113,0.4)');
+        ctext(String(score), W / 2, H / 2 - 10, 'bold 58px Outfit, system-ui, sans-serif', C_AMBER, C_AMBER);
+        var isNew = score >= best;
+        ctext(isNew ? ('New best: ' + best) : ('Best: ' + best), W / 2, H / 2 + 38, '14px DM Sans, system-ui, sans-serif', isNew ? C_AMBER_S : C_MUTED, null);
+        ctext('Press Space or tap to try again', W / 2, H / 2 + 66, '14px DM Sans, system-ui, sans-serif', C_TEXT, null);
+    }
+
+    function drawScore() {
+        ctx.save();
+        ctx.font = 'bold 42px Outfit, system-ui, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillStyle = 'rgba(245,158,11,0.9)';
+        ctx.shadowColor = C_AMBER; ctx.shadowBlur = 10;
+        ctx.fillText(score, W / 2, 14);
+        ctx.restore();
+    }
+
+    // ── update ────────────────────────────────────────────
+    function update() {
+        if (STATE !== 'running') return;
+        frame++;
+        speed = 2.8 + score * 0.07;
+
+        var interval = Math.max(60, 94 - Math.floor(score / 5) * 4);
+        if (frame % interval === 0) spawnRing();
+
+        rvy = Math.min(MAX_VY, rvy + GRAVITY);
+        ry += rvy;
+
+        for (var i = rings.length - 1; i >= 0; i--) {
+            rings[i].x -= speed;
+            if (!rings[i].passed && rings[i].x + RING_W / 2 < ROCKET_X - ROCKET_HW) {
+                rings[i].passed = true;
+                score++;
+                if (score > best) {
+                    best = score;
+                    try { localStorage.setItem('flr-best', best); } catch (e2) {}
+                }
+            }
+            if (rings[i].x + RING_W < 0) rings.splice(i, 1);
+        }
+
+        for (var j = 0; j < stars.length; j++) {
+            stars[j].x -= stars[j].s * (speed / 2.5);
+            if (stars[j].x < 0) { stars[j].x = W; stars[j].y = Math.random() * H; }
+        }
+
+        if (frame % 2 === 0) {
+            particles.push({
+                x: ROCKET_X - ROCKET_HH - 2,
+                y: ry + (Math.random() - 0.5) * 10,
+                vx: -(Math.random() * 1.8 + 0.5),
+                vy: (Math.random() - 0.5) * 1.2,
+                life: 0.65, decay: 0.06 + Math.random() * 0.04,
+                r: 1.5 + Math.random() * 2.5
+            });
+        }
+
+        for (var k = particles.length - 1; k >= 0; k--) {
+            var p = particles[k];
+            p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+            if (p.life <= 0) particles.splice(k, 1);
+        }
+
+        if (hitTest()) STATE = 'dead';
+    }
+
+    // ── render ────────────────────────────────────────────
+    function render() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = C_BG; ctx.fillRect(0, 0, W, H);
+
+        for (var i = 0; i < stars.length; i++) {
+            var s = stars[i];
+            ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(226,232,240,' + s.a + ')'; ctx.fill();
+        }
+
+        if (STATE !== 'idle') {
+            for (var j = 0; j < rings.length; j++) drawBarrier(rings[j]);
+        }
+
+        for (var k = 0; k < particles.length; k++) {
+            var p2 = particles[k];
+            ctx.beginPath();
+            ctx.arc(p2.x, p2.y, Math.max(0.4, p2.r * p2.life), 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(245,158,11,' + (p2.life * 0.85) + ')';
+            ctx.fill();
+        }
+
+        var tilt = Math.max(-0.5, Math.min(0.36, rvy * 0.042));
+        if (STATE === 'running') drawFlame(ROCKET_X, ry, tilt);
+        drawRocket(ROCKET_X, ry, tilt);
+
+        if (STATE === 'running') drawScore();
+        if (STATE === 'idle')    drawIdleScreen();
+        if (STATE === 'dead')    drawDeadScreen();
+    }
+
+    // ── loop ──────────────────────────────────────────────
+    var rafId = 0;
+    var active = true;
+
+    function loop() {
+        if (!active) return;
+        update();
+        render();
+        rafId = requestAnimationFrame(loop);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        active = !document.hidden;
+        if (active) { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(loop); }
+        else { cancelAnimationFrame(rafId); }
+    });
+
+    initStars();
+    reset();
+    loop();
+})();

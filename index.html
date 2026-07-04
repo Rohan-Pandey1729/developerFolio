@@ -11,6 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
     <!-- Plausible example:
     <script defer data-domain="rohan-pandey1729.github.io" src="https://plausible.io/js/script.js"></script>
     -->
@@ -76,6 +84,7 @@
             <div class="hero-bg" aria-hidden="true"></div>
             <div class="hero-noise" aria-hidden="true"></div>
             <canvas id="bg-flair" class="bg-flair" aria-hidden="true"></canvas>
+            <div id="space-scene" class="space-scene" aria-hidden="true"></div>
             <div class="wrap hero-wrap">
                 <p class="hero-label">Research Scientist & ML Engineer</p>
                 <h1 class="hero-title"><span class="hero-title-gradient hero-title-script">Rohan Pandey</span></h1>
@@ -86,6 +95,7 @@
                 </div>
             </div>
             <div class="scroll-cue" aria-hidden="true"></div>
+            <p class="hero-hint" aria-hidden="true"><i class="fas fa-rocket"></i> move to explore · click for boost</p>
         </section>
 
         <section id="now" class="section section-alt now">
@@ -388,6 +398,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script type="module" src="three-scene.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4f90d19d4b4c477ea379b6bcd3dcb488"}'></script>
     <!-- End Cloudflare Web Analytics -->

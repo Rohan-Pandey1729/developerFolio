@@ -312,6 +312,62 @@ body.loaded .cursor {
     mix-blend-mode: screen;
 }
 
+/* 3D space scene — sits above gradients, below hero content */
+.space-scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.space-scene canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* When WebGL scene is live, retire the 2D starfield layer */
+html.space3d .bg-flair {
+    display: none;
+}
+
+html.space3d .hero-bg {
+    opacity: 0.55;
+}
+
+.hero-wrap {
+    z-index: 2;
+}
+
+.hero-hint {
+    position: absolute;
+    bottom: 1.6rem;
+    right: 2rem;
+    z-index: 2;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.8s ease 1.2s;
+    pointer-events: none;
+}
+
+.hero-hint i {
+    color: var(--accent);
+    margin-right: 0.4rem;
+}
+
+html.space3d body.loaded .hero-hint {
+    opacity: 0.75;
+}
+
+@media (max-width: 720px) {
+    .hero-hint {
+        display: none;
+    }
+}
+
 .hero-bg {
     position: absolute;
     inset: 0;

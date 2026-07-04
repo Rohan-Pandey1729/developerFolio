@@ -248,8 +248,10 @@
         document.querySelectorAll(selector).forEach(addRipple);
     })();
 
-    // Subtle background flair (starfield) — hero canvas
-    (function () {
+    // Subtle background flair (starfield) — hero canvas.
+    // Fallback only: runs when the 3D scene (three-scene.js) reports failure
+    // or never reports at all (module blocked / old browser).
+    function startStarfield2D() {
         var canvas = document.getElementById('bg-flair');
         if (!canvas) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -356,6 +358,45 @@
             }, { threshold: 0.05 });
             io.observe(hero);
         }
+    }
+
+    (function () {
+        var started = false;
+        function startOnce() {
+            if (started || window.__space3d === 'ready') return;
+            started = true;
+            startStarfield2D();
+        }
+        window.addEventListener('space3d:failed', startOnce);
+        // Module scripts never ran (ancient browser) or CDN blocked: no event fires.
+        setTimeout(function () {
+            if (window.__space3d !== 'ready') startOnce();
+        }, 2500);
+    })();
+
+    // 3D tilt on cards — pointer-tracked perspective
+    (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (window.matchMedia('(hover: none)').matches) return;
+        var cards = document.querySelectorAll('.hackathon-card, .publications-card, .now-card');
+        cards.forEach(function (card) {
+            var raf = 0;
+            card.addEventListener('pointermove', function (e) {
+                if (raf) return;
+                raf = requestAnimationFrame(function () {
+                    raf = 0;
+                    var rect = card.getBoundingClientRect();
+                    var px = (e.clientX - rect.left) / rect.width - 0.5;
+                    var py = (e.clientY - rect.top) / rect.height - 0.5;
+                    card.style.transform =
+                        'perspective(800px) rotateX(' + (-py * 6).toFixed(2) + 'deg) rotateY(' + (px * 8).toFixed(2) + 'deg) translateY(-4px)';
+                });
+            });
+            card.addEventListener('pointerleave', function () {
+                if (raf) { cancelAnimationFrame(raf); raf = 0; }
+                card.style.transform = '';
+            });
+        });
     })();
 
     // Spotlight modal (for hackathon cards)

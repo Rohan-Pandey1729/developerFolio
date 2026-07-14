@@ -200,7 +200,7 @@ function init() {
 
     // ---------------------------------------------------------------- Planet
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(10.5, 4.6, -18);
+    planetGroup.position.set(13.5, 9.2, -24);
     scene.add(planetGroup);
 
     const planet = new THREE.Mesh(
@@ -420,7 +420,8 @@ function init() {
 
     // ---------------------------------------------------- Neural constellation
     const neuralGroup = new THREE.Group();
-    neuralGroup.position.set(-11, 4.8, -14);
+    neuralGroup.position.set(-13.5, 9.4, -18);
+    neuralGroup.scale.setScalar(0.8);
     scene.add(neuralGroup);
     {
         const NODES = 34;
@@ -438,7 +439,7 @@ function init() {
         }
         const nGeo = new THREE.BufferGeometry().setFromPoints(nodePos);
         const nodes = new THREE.Points(nGeo, new THREE.PointsMaterial({
-            color: 0xfbbf24, size: 0.09, transparent: true, opacity: 0.9,
+            color: 0xfbbf24, size: 0.08, transparent: true, opacity: 0.7,
             blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
         }));
         neuralGroup.add(nodes);
@@ -500,10 +501,12 @@ function init() {
     let flightT = 0;
 
     function rocketPath(t, out) {
+        // Fly a wide arc through the UPPER band so the rocket never crosses
+        // the centered title text below it.
         out.set(
-            9.5 * Math.sin(t * 0.32),
-            2.6 * Math.sin(t * 0.21 + 1.3) - 0.4,
-            -5 + 6 * Math.sin(t * 0.45 + 0.4)
+            10.5 * Math.sin(t * 0.32),
+            3.4 + 1.5 * Math.sin(t * 0.21 + 1.3),
+            -7 + 6 * Math.sin(t * 0.45 + 0.4)
         );
         return out;
     }

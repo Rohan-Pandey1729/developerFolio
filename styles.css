@@ -332,7 +332,7 @@ html.space3d .bg-flair {
 }
 
 html.space3d .hero-bg {
-    opacity: 0.55;
+    opacity: 0.35;
 }
 
 .hero-wrap {
@@ -395,6 +395,21 @@ html.space3d body.loaded .hero-hint {
 .hero-wrap {
     position: relative;
     text-align: center;
+}
+
+/* Soft focus vignette: calms the 3D scene directly behind the name so the
+   title reads cleanly and the busy elements stay in the periphery. */
+html.space3d .hero-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -18% -14%;
+    z-index: -1;
+    background: radial-gradient(ellipse 68% 62% at 50% 50%,
+        rgba(12, 18, 34, 0.78) 0%,
+        rgba(12, 18, 34, 0.5) 38%,
+        rgba(12, 18, 34, 0.18) 62%,
+        transparent 80%);
+    pointer-events: none;
 }
 
 .hero-label {

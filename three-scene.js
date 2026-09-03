@@ -199,8 +199,9 @@ function init() {
     scene.add(stars);
 
     // ---------------------------------------------------------------- Planet
+    // Upper-left corner: the right half of the hero belongs to the growing map.
     const planetGroup = new THREE.Group();
-    planetGroup.position.set(13.5, 9.2, -24);
+    planetGroup.position.set(-23, 13.5, -31);
     scene.add(planetGroup);
 
     const planet = new THREE.Mesh(
@@ -418,48 +419,9 @@ function init() {
     scene.add(trail);
     let trailCursor = 0;
 
-    // ---------------------------------------------------- Neural constellation
-    const neuralGroup = new THREE.Group();
-    neuralGroup.position.set(-13.5, 9.4, -18);
-    neuralGroup.scale.setScalar(0.8);
-    scene.add(neuralGroup);
-    {
-        const NODES = 34;
-        const nodePos = [];
-        for (let i = 0; i < NODES; i++) {
-            // loose ellipsoid cluster
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = Math.pow(Math.random(), 0.6);
-            nodePos.push(new THREE.Vector3(
-                Math.sin(phi) * Math.cos(theta) * 3.4 * r,
-                Math.sin(phi) * Math.sin(theta) * 2.1 * r,
-                Math.cos(phi) * 1.6 * r
-            ));
-        }
-        const nGeo = new THREE.BufferGeometry().setFromPoints(nodePos);
-        const nodes = new THREE.Points(nGeo, new THREE.PointsMaterial({
-            color: 0xfbbf24, size: 0.08, transparent: true, opacity: 0.7,
-            blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-        }));
-        neuralGroup.add(nodes);
-
-        const linePts = [];
-        for (let i = 0; i < NODES; i++) {
-            for (let j = i + 1; j < NODES; j++) {
-                if (nodePos[i].distanceTo(nodePos[j]) < 1.7) {
-                    linePts.push(nodePos[i], nodePos[j]);
-                }
-            }
-        }
-        const lGeo = new THREE.BufferGeometry().setFromPoints(linePts);
-        const lines = new THREE.LineSegments(lGeo, new THREE.LineBasicMaterial({
-            color: 0xf59e0b, transparent: true, opacity: 0.22,
-            blending: THREE.AdditiveBlending, depthWrite: false
-        }));
-        neuralGroup.add(lines);
-        neuralGroup.userData.lines = lines;
-    }
+    // The neural constellation used to live up here. It now exists at full size
+    // as the interactive growing map in the hero (see trajectory-map.js), so the
+    // 3D scene stays pure atmosphere.
 
     // ------------------------------------------------------------ Interaction
     const mouse = { x: 0, y: 0 };
@@ -501,11 +463,11 @@ function init() {
     let flightT = 0;
 
     function rocketPath(t, out) {
-        // Fly a wide arc through the UPPER band so the rocket never crosses
-        // the centered title text below it.
+        // Fly the lower-LEFT band: clear of the hero copy above it and clear of
+        // the growing map that owns the right half of the screen.
         out.set(
-            10.5 * Math.sin(t * 0.32),
-            3.4 + 1.5 * Math.sin(t * 0.21 + 1.3),
+            -7.5 + 5.5 * Math.sin(t * 0.32),
+            -5.4 + 1.3 * Math.sin(t * 0.21 + 1.3),
             -7 + 6 * Math.sin(t * 0.45 + 0.4)
         );
         return out;
@@ -571,10 +533,6 @@ function init() {
         }
         trailGeo.attributes.position.needsUpdate = true;
         trailGeo.attributes.aLife.needsUpdate = true;
-
-        // neural pulse
-        neuralGroup.userData.lines.material.opacity = 0.14 + 0.12 * (0.5 + 0.5 * Math.sin(elapsed * 1.7));
-        neuralGroup.rotation.y = Math.sin(elapsed * 0.1) * 0.3;
 
         // camera: mouse parallax + gentle drift + boost fov punch
         camera.position.x += (mouse.x * 1.6 - camera.position.x) * 0.04;

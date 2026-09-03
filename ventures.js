@@ -3,7 +3,7 @@
 
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ── Qorbit: rocket flight + recovery deploy animation ───────────────
+    // ── Qorbit: telemetry-driven recovery sequence ──────────────────────
     function initQorbit(canvas, card) {
         var ctx = canvas.getContext('2d');
         if (!ctx) return null;
@@ -13,14 +13,17 @@
         var t = 0;
         var running = false;
         var rafId = 0;
+        var particles = [];
+        var trail = [];
 
         var telTime = card.querySelector('[data-tel="time"]');
         var telAlt = card.querySelector('[data-tel="alt"]');
         var telState = card.querySelector('[data-tel="state"]');
 
-        var states = ['ACTIVE', 'TRACKING', 'PROTECTED', 'RECORDED'];
-        var stateIdx = 0;
-        var stateTimer = 0;
+        var CYCLE = 10;
+        var launchX = 0;
+        var apogeeY = 0;
+        var groundY = 0;
 
         function resize() {
             var rect = canvas.getBoundingClientRect();
@@ -29,22 +32,108 @@
             canvas.width = Math.floor(w * dpr);
             canvas.height = Math.floor(h * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            launchX = w * 0.14;
+            groundY = h * 0.84;
+            apogeeY = groundY - h * 0.52;
         }
 
-        function drawRocket(x, y, angle, scale) {
+        // phase 0–1 maps to: pad → boost → coast → deploy → chute descent → landed
+        function flightState(phase) {
+            if (phase < 0.08) return 'preflight';
+            if (phase < 0.38) return 'boost';
+            if (phase < 0.48) return 'coast';
+            if (phase < 0.54) return 'deploy';
+            if (phase < 0.88) return 'descent';
+            return 'landed';
+        }
+
+        function rocketPos(phase) {
+            var padX = launchX;
+            var apogeeX = w * 0.52;
+
+            if (phase < 0.08) {
+                return { x: padX, y: groundY - 14, angle: -Math.PI / 2, chute: 0, flame: false };
+            }
+            if (phase < 0.38) {
+                var p = (phase - 0.08) / 0.3;
+                var ease = 1 - Math.pow(1 - p, 2.2);
+                return {
+                    x: padX + (apogeeX - padX) * ease,
+                    y: groundY - 14 - (groundY - 14 - apogeeY) * ease,
+                    angle: -Math.PI / 2 + ease * 0.12,
+                    chute: 0,
+                    flame: true
+                };
+            }
+            if (phase < 0.48) {
+                var drift = Math.sin((phase - 0.38) * 18) * 2;
+                return { x: apogeeX + drift, y: apogeeY, angle: 0.08, chute: 0, flame: false };
+            }
+            if (phase < 0.54) {
+                var dp = (phase - 0.48) / 0.06;
+                return { x: apogeeX, y: apogeeY + dp * 8, angle: 0.15, chute: Math.min(1, dp * 1.4), flame: false };
+            }
+            if (phase < 0.88) {
+                var fp = (phase - 0.54) / 0.34;
+                var sway = Math.sin(fp * 9 + t * 2) * 14 * (1 - fp * 0.4);
+                return {
+                    x: apogeeX + sway,
+                    y: apogeeY + (groundY - 18 - apogeeY) * (fp * fp * 0.85 + fp * 0.15),
+                    angle: Math.sin(fp * 9 + t * 2) * 0.18,
+                    chute: 1,
+                    flame: false
+                };
+            }
+            return { x: apogeeX, y: groundY - 16, angle: 0.05, chute: 0.85, flame: false };
+        }
+
+        function predictedArc() {
+            var padX = launchX;
+            var apogeeX = w * 0.52;
+            var pts = [];
+            for (var i = 0; i <= 40; i++) {
+                var p = i / 40;
+                var ease = 1 - Math.pow(1 - p, 2.2);
+                pts.push({
+                    x: padX + (apogeeX - padX) * ease,
+                    y: groundY - 14 - (groundY - 14 - apogeeY) * ease
+                });
+            }
+            return pts;
+        }
+
+        function spawnExhaust(x, y) {
+            for (var i = 0; i < 2; i++) {
+                particles.push({
+                    x: x + (Math.random() - 0.5) * 4,
+                    y: y + 10 + Math.random() * 4,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: 1.5 + Math.random() * 2.5,
+                    life: 1,
+                    decay: 0.04 + Math.random() * 0.03,
+                    r: 1.5 + Math.random() * 2
+                });
+            }
+        }
+
+        function drawRocket(x, y, angle, chute, flame) {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle);
-            ctx.scale(scale, scale);
 
-            // Exhaust glow
-            var eg = ctx.createRadialGradient(0, 14, 0, 0, 14, 18);
-            eg.addColorStop(0, 'rgba(245,158,11,0.45)');
-            eg.addColorStop(1, 'rgba(245,158,11,0)');
-            ctx.fillStyle = eg;
-            ctx.beginPath();
-            ctx.ellipse(0, 14, 10, 16, 0, 0, Math.PI * 2);
-            ctx.fill();
+            if (flame) {
+                var fg = ctx.createLinearGradient(0, 12, 0, 28);
+                fg.addColorStop(0, 'rgba(251,191,36,0.95)');
+                fg.addColorStop(0.5, 'rgba(245,158,11,0.55)');
+                fg.addColorStop(1, 'rgba(245,158,11,0)');
+                ctx.fillStyle = fg;
+                ctx.beginPath();
+                ctx.moveTo(-4, 12);
+                ctx.lineTo(0, 22 + Math.random() * 4);
+                ctx.lineTo(4, 12);
+                ctx.closePath();
+                ctx.fill();
+            }
 
             // Body
             ctx.fillStyle = '#e8ecf0';
@@ -78,95 +167,174 @@
             ctx.closePath();
             ctx.fill();
 
-            // Parachute (appears during deploy phase)
-            var phase = (t % 8) / 8;
-            if (phase > 0.55 && phase < 0.85) {
-                var deploy = Math.min(1, (phase - 0.55) / 0.12);
-                ctx.strokeStyle = 'rgba(251,191,36,' + (deploy * 0.9) + ')';
+            // Recovery module indicator
+            ctx.fillStyle = 'rgba(34,197,94,0.85)';
+            ctx.fillRect(-3, -8, 6, 3);
+
+            if (chute > 0.05) {
+                var c = chute;
+                ctx.strokeStyle = 'rgba(251,191,36,' + (c * 0.95) + ')';
                 ctx.lineWidth = 1.2;
                 ctx.beginPath();
-                ctx.moveTo(-8, -18);
-                ctx.quadraticCurveTo(0, -18 - 22 * deploy, 8, -18);
+                ctx.moveTo(-7, -18);
+                ctx.lineTo(-5, -18 - 20 * c);
+                ctx.moveTo(7, -18);
+                ctx.lineTo(5, -18 - 20 * c);
                 ctx.stroke();
-                ctx.fillStyle = 'rgba(245,158,11,' + (deploy * 0.35) + ')';
+                ctx.fillStyle = 'rgba(245,158,11,' + (c * 0.4) + ')';
                 ctx.beginPath();
-                ctx.ellipse(0, -18 - 14 * deploy, 12 * deploy, 8 * deploy, 0, 0, Math.PI * 2);
+                ctx.ellipse(0, -18 - 16 * c, 14 * c, 9 * c, 0, Math.PI, 0);
                 ctx.fill();
+                ctx.strokeStyle = 'rgba(251,191,36,' + (c * 0.6) + ')';
+                ctx.beginPath();
+                ctx.moveTo(-14 * c, -18 - 16 * c);
+                ctx.quadraticCurveTo(0, -18 - 24 * c, 14 * c, -18 - 16 * c);
+                ctx.stroke();
             }
 
             ctx.restore();
         }
 
-        function drawTrail(points) {
-            if (points.length < 2) return;
-            ctx.strokeStyle = 'rgba(245,158,11,0.35)';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-            for (var i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
+        function drawHud(state, phase, pos, deployMs) {
+            var labels = {
+                preflight: 'PREFLIGHT',
+                boost: 'ACTIVE',
+                coast: 'TRACKING',
+                deploy: 'PROTECTED',
+                descent: 'PROTECTED',
+                landed: 'RECORDED'
+            };
+            if (telState) telState.textContent = labels[state] || 'ACTIVE';
+
+            var elapsed = phase * CYCLE;
+            if (telTime) telTime.textContent = elapsed.toFixed(3) + 's';
+            if (telAlt) {
+                var altM = Math.max(0, Math.round((groundY - pos.y) * 0.95));
+                telAlt.textContent = altM + ' m';
             }
-            ctx.stroke();
+
+            // Apogee flash
+            if (state === 'coast' || (state === 'deploy' && phase < 0.5)) {
+                ctx.save();
+                ctx.font = '700 9px Outfit, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(245,158,11,' + (0.55 + Math.sin(t * 8) * 0.25) + ')';
+                ctx.fillText('APOGEE', pos.x + 14, pos.y - 10);
+                ctx.restore();
+            }
+
+            // Deploy timer callout
+            if (state === 'deploy') {
+                ctx.save();
+                ctx.font = '600 8px DM Sans, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(34,197,94,0.9)';
+                ctx.fillText('DEPLOY ' + deployMs + 'ms', pos.x + 14, pos.y + 4);
+                ctx.restore();
+            }
+
+            if (state === 'landed') {
+                ctx.save();
+                ctx.font = '600 9px DM Sans, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(34,197,94,0.75)';
+                ctx.fillText('✓ FLIGHT LOGGED', pos.x - 28, pos.y + 22);
+                ctx.restore();
+            }
         }
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
 
+            var phase = (t % CYCLE) / CYCLE;
+            var state = flightState(phase);
+            var pos = rocketPos(phase);
+            var deployMs = state === 'deploy'
+                ? Math.min(380, Math.round((phase - 0.48) / 0.06 * 380))
+                : (phase >= 0.54 ? 312 : 0);
+
             // Stars
-            for (var s = 0; s < 24; s++) {
-                var sx = ((s * 137.5 + t * 8) % w);
-                var sy = ((s * 97.3) % (h * 0.7));
+            for (var s = 0; s < 28; s++) {
+                var sx = (s * 137.5 + t * 6) % w;
+                var sy = (s * 97.3) % (h * 0.75);
                 ctx.beginPath();
-                ctx.arc(sx, sy, 0.6 + (s % 3) * 0.3, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(226,232,240,' + (0.15 + (s % 5) * 0.06) + ')';
+                ctx.arc(sx, sy, 0.5 + (s % 3) * 0.25, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(226,232,240,' + (0.12 + (s % 5) * 0.05) + ')';
                 ctx.fill();
             }
 
-            // Ground line
-            var groundY = h * 0.82;
-            ctx.strokeStyle = 'rgba(148,163,184,0.15)';
+            // Launch pad
+            ctx.strokeStyle = 'rgba(148,163,184,0.2)';
             ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(launchX - 18, groundY);
+            ctx.lineTo(launchX + 18, groundY);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(148,163,184,0.08)';
+            ctx.fillRect(launchX - 14, groundY - 4, 28, 4);
+
+            // Ground
+            ctx.strokeStyle = 'rgba(148,163,184,0.12)';
             ctx.beginPath();
             ctx.moveTo(0, groundY);
             ctx.lineTo(w, groundY);
             ctx.stroke();
 
-            // Flight path
-            var cycle = 8;
-            var phase = (t % cycle) / cycle;
-            var rx = w * 0.12 + (w * 0.76) * phase;
-            var ry;
-            if (phase < 0.45) {
-                ry = groundY - (h * 0.55) * Math.sin(phase / 0.45 * Math.PI);
-            } else if (phase < 0.55) {
-                ry = groundY - h * 0.55;
-            } else {
-                var fall = (phase - 0.55) / 0.45;
-                ry = groundY - h * 0.55 * (1 - fall * fall);
+            // Predicted trajectory (dashed arc)
+            var arc = predictedArc();
+            ctx.setLineDash([4, 6]);
+            ctx.strokeStyle = 'rgba(245,158,11,0.22)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(arc[0].x, arc[0].y);
+            for (var a = 1; a < arc.length; a++) ctx.lineTo(arc[a].x, arc[a].y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Apogee target ring
+            ctx.strokeStyle = 'rgba(245,158,11,0.18)';
+            ctx.beginPath();
+            ctx.arc(w * 0.52, apogeeY, 16, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Live trail during boost/coast
+            if (state === 'boost' || state === 'coast' || state === 'deploy') {
+                trail.push({ x: pos.x, y: pos.y });
+                if (trail.length > 48) trail.shift();
+            } else if (state === 'preflight' || state === 'landed') {
+                if (phase < 0.02 || phase > 0.94) trail = [];
             }
 
-            var angle = phase < 0.45 ? -Math.PI / 2 + 0.15 : (phase < 0.55 ? 0.1 : 0.4);
-            drawRocket(rx, ry, angle, 1.1);
-
-            // Apogee marker
-            if (phase >= 0.44 && phase <= 0.56) {
-                ctx.fillStyle = 'rgba(245,158,11,0.6)';
-                ctx.font = '600 9px DM Sans, system-ui, sans-serif';
-                ctx.fillText('APOGEE', rx + 12, ry - 8);
+            if (trail.length > 1) {
+                ctx.strokeStyle = 'rgba(245,158,11,0.45)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(trail[0].x, trail[0].y);
+                for (var ti = 1; ti < trail.length; ti++) ctx.lineTo(trail[ti].x, trail[ti].y);
+                ctx.stroke();
             }
 
-            // Telemetry sync
-            if (telTime) telTime.textContent = (phase * cycle * 0.4).toFixed(3) + 's';
-            if (telAlt) {
-                var altM = Math.max(0, Math.round((groundY - ry) * 0.9));
-                telAlt.textContent = altM + ' m';
+            // Particles
+            if (pos.flame) spawnExhaust(pos.x, pos.y);
+            for (var pi = particles.length - 1; pi >= 0; pi--) {
+                var p = particles[pi];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= p.decay;
+                if (p.life <= 0) { particles.splice(pi, 1); continue; }
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(245,158,11,' + (p.life * 0.7) + ')';
+                ctx.fill();
             }
-            stateTimer += 0.016;
-            if (stateTimer > 1.2) {
-                stateTimer = 0;
-                stateIdx = (stateIdx + 1) % states.length;
+
+            // Preflight checklist pulse
+            if (state === 'preflight') {
+                var checkAlpha = 0.35 + Math.sin(t * 4) * 0.2;
+                ctx.font = '600 8px DM Sans, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(245,158,11,' + checkAlpha + ')';
+                ctx.fillText('ARMED · CHECKS OK', launchX - 34, groundY - 28);
             }
-            if (telState) telState.textContent = states[stateIdx];
+
+            drawRocket(pos.x, pos.y, pos.angle, pos.chute, pos.flame);
+            drawHud(state, phase, pos, deployMs);
 
             t += 0.016;
         }

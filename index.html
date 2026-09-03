@@ -66,6 +66,7 @@
             <nav class="nav">
                 <span class="nav-underline" aria-hidden="true"></span>
                 <a href="#about" class="nav-link">About</a>
+                <a href="#ventures" class="nav-link">Ventures</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#hackathons" class="nav-link">Hackathons</a>
                 <a href="#publications" class="nav-link">Publications</a>
@@ -88,7 +89,7 @@
             <div class="wrap hero-wrap">
                 <p class="hero-label">Research Scientist & ML Engineer</p>
                 <h1 class="hero-title"><span class="hero-title-gradient hero-title-script">Rohan Pandey</span></h1>
-                <p class="hero-desc">ML, mathematics & computational biology. Building at the intersection of reinforcement learning, cancer research, and systems that scale.</p>
+                <p class="hero-desc">ML, mathematics & computational biology — and founder of two startups spanning rocket recovery and AI-powered research.</p>
                 <div class="hero-actions">
                     <a href="https://rohan-pandey1729.github.io/developerFolio/#contact" class="btn btn-primary">Get in touch</a>
                     <a href="#about" class="btn btn-ghost">Learn more</a>
@@ -111,9 +112,9 @@
                             <div class="now-time" id="now-time" aria-label="Current local time"></div>
                         </div>
                         <ul class="now-list">
+                            <li><strong>Founding</strong> <a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">Qorbit Systems</a> &amp; <a href="https://www.lumina-research.com/" target="_blank" rel="noopener">Lumina Research</a></li>
                             <li><strong>Building</strong> at DigitalOcean — cloud infrastructure & developer tools</li>
                             <li><strong>Research</strong> in RL + symbolic systems (GNNs, PPO, verification)</li>
-                            <li><strong>Exploring</strong> EEG/NeuroAI visualization and realtime systems</li>
                         </ul>
                         <div class="now-actions">
                             <a class="btn btn-ghost btn-small" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
@@ -130,13 +131,94 @@
             </div>
         </section>
 
+        <section id="ventures" class="section ventures">
+            <div class="wrap ventures-wrap">
+                <div class="ventures-header reveal">
+                    <h2 class="section-title"><span class="section-title-line"></span>Ventures</h2>
+                    <p class="section-sub ventures-sub">Two companies. One orbit — hardware that saves rockets, and software that ships papers.</p>
+                </div>
+
+                <div class="ventures-orbit-ring" aria-hidden="true">
+                    <svg class="ventures-orbit-svg" viewBox="0 0 920 120" preserveAspectRatio="none">
+                        <ellipse cx="460" cy="60" rx="440" ry="48" fill="none" stroke="url(#orbitGrad)" stroke-width="1.5" stroke-dasharray="6 10" opacity="0.35"/>
+                        <defs>
+                            <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#f59e0b"/>
+                                <stop offset="50%" stop-color="#818cf8"/>
+                                <stop offset="100%" stop-color="#f59e0b"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="ventures-orbit-badge">Founder × 2</span>
+                </div>
+
+                <div class="ventures-grid">
+                    <a href="https://www.qorbitsystems.com/" class="venture-card venture-qorbit reveal" target="_blank" rel="noopener">
+                        <span class="venture-glow" aria-hidden="true"></span>
+                        <div class="venture-visual">
+                            <canvas class="venture-canvas" data-venture="qorbit" aria-hidden="true"></canvas>
+                            <div class="venture-telemetry" aria-hidden="true">
+                                <div class="telemetry-row"><span>T+</span><span class="telemetry-val" data-tel="time">0.000s</span></div>
+                                <div class="telemetry-row"><span>ALT</span><span class="telemetry-val" data-tel="alt">142 m</span></div>
+                                <div class="telemetry-row"><span>STATE</span><span class="telemetry-val telemetry-state" data-tel="state">ACTIVE</span></div>
+                            </div>
+                        </div>
+                        <div class="venture-body">
+                            <div class="venture-meta">
+                                <span class="venture-role">Founder</span>
+                                <span class="venture-domain">Dec 2025 · qorbitsystems.com</span>
+                            </div>
+                            <h3 class="venture-name">Qorbit Systems</h3>
+                            <p class="venture-tagline">Smarter recovery for model rocketry — guided pre-flight checks, sub-400ms backup deployment, and shareable flight records for TARC &amp; competition teams.</p>
+                            <ul class="venture-stats">
+                                <li><strong>4,000+</strong> competition teams</li>
+                                <li><strong>&lt;400 ms</strong> recovery response</li>
+                                <li><strong>$240M</strong> addressable market</li>
+                            </ul>
+                            <span class="venture-cta">Visit Qorbit <i class="fas fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.lumina-research.com/" class="venture-card venture-lumina reveal" target="_blank" rel="noopener">
+                        <span class="venture-glow" aria-hidden="true"></span>
+                        <div class="venture-visual">
+                            <canvas class="venture-canvas" data-venture="lumina" aria-hidden="true"></canvas>
+                            <div class="venture-pipeline" aria-hidden="true">
+                                <span class="pipeline-node active" data-step="0">Question</span>
+                                <span class="pipeline-line"></span>
+                                <span class="pipeline-node" data-step="1">Literature</span>
+                                <span class="pipeline-line"></span>
+                                <span class="pipeline-node" data-step="2">Analysis</span>
+                                <span class="pipeline-line"></span>
+                                <span class="pipeline-node" data-step="3">Paper</span>
+                            </div>
+                        </div>
+                        <div class="venture-body">
+                            <div class="venture-meta">
+                                <span class="venture-role">Founder</span>
+                                <span class="venture-domain">Mar 2026 · lumina-research.com</span>
+                            </div>
+                            <h3 class="venture-name">Lumina Research</h3>
+                            <p class="venture-tagline">A project-based course that takes you from a research question to a submitted paper — AI-powered, structured, and built for people who want to actually publish.</p>
+                            <ul class="venture-stats">
+                                <li><strong>End-to-end</strong> research workflow</li>
+                                <li><strong>AI-guided</strong> at every stage</li>
+                                <li><strong>Question → paper</strong> in one arc</li>
+                            </ul>
+                            <span class="venture-cta">Explore Lumina <i class="fas fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="section">
             <div class="wrap">
                 <h2 class="section-title"><span class="section-title-line"></span>About</h2>
                 <div class="about-grid">
                     <div class="about-text reveal">
                         <p>I'm an incoming BS/MS student in Applied &amp; Computational Mathematical Sciences (ACMS) at the University of Washington and a Research Scientist and ML Engineer. I minored in Neural Computation and Engineering, with a focus on AI in neuroscience.</p>
-                        <p>My work spans reinforcement learning for polynomial synthesis (GNNs, PPO), cancer modeling for CAR T-cell therapy, and deep learning and adversarial ML for robust systems. I love building at the intersection of theory and applied systems.</p>
+                        <p>I'm also the founder of <a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">Qorbit Systems</a> (smarter recovery for model rocketry) and <a href="https://www.lumina-research.com/" target="_blank" rel="noopener">Lumina Research</a> (AI-powered research education). My technical work spans reinforcement learning for polynomial synthesis (GNNs, PPO), cancer modeling for CAR T-cell therapy, and deep learning for robust systems.</p>
                         <p>When I'm not in the lab or building rockets, I'm on the tennis court or winning at Monopoly. I'm always up for collaborating and exploring new tech.</p>
                     </div>
                     <div class="skills reveal">
@@ -161,6 +243,38 @@
                 <h2 class="section-title"><span class="section-title-line"></span>Experience</h2>
                 <div class="timeline">
                     <details class="timeline-item reveal" open>
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Founder</strong> · Qorbit Systems</span>
+                            <span class="timeline-summary-dates">Dec 2025 – Present</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>Building smarter recovery for model rocketry — guided pre-flight workflows, sub-400ms backup deployment, and shareable flight records for TARC &amp; competition teams.</p>
+                            <ul>
+                                <li>Physics-engine flight simulation and real-time telemetry platform</li>
+                                <li>Designed for 4,000+ competition teams in a $240M global market</li>
+                            </ul>
+                            <p><a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">qorbitsystems.com</a></p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
+                        <summary class="timeline-summary">
+                            <span class="timeline-summary-main"><strong>Founder</strong> · Lumina Research</span>
+                            <span class="timeline-summary-dates">Mar 2026 – Present</span>
+                            <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </summary>
+                        <div class="timeline-details">
+                            <p>Project-based course teaching AI-powered research — from formulating a question to submitting a paper.</p>
+                            <ul>
+                                <li>Structured workflow covering literature review, analysis, and writing</li>
+                                <li>Built for researchers who want to ship real publications</li>
+                            </ul>
+                            <p><a href="https://www.lumina-research.com/" target="_blank" rel="noopener">lumina-research.com</a></p>
+                        </div>
+                    </details>
+
+                    <details class="timeline-item reveal">
                         <summary class="timeline-summary">
                             <span class="timeline-summary-main"><strong>Software Engineer II</strong> · DigitalOcean</span>
                             <span class="timeline-summary-dates">Mar 2026 – Present</span>
@@ -398,6 +512,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="ventures.js"></script>
     <script type="module" src="three-scene.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4f90d19d4b4c477ea379b6bcd3dcb488"}'></script>

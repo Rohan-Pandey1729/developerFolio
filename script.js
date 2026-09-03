@@ -201,6 +201,9 @@
     document.querySelectorAll('.hackathon-card.reveal').forEach(function (el, i) {
         el.classList.add('stagger-' + (i + 1));
     });
+    document.querySelectorAll('.venture-card.reveal').forEach(function (el, i) {
+        el.classList.add('stagger-' + (i + 1));
+    });
 
     // Mobile nav toggle
     var toggle = document.querySelector('.nav-toggle');
@@ -227,7 +230,7 @@
 
     // Micro-interactions: ripples for clickable elements
     (function () {
-        var selector = '.btn, .hackathon-card, .publications-card, .now-card, .now-mini';
+        var selector = '.btn, .hackathon-card, .publications-card, .now-card, .now-mini, .venture-card';
         function addRipple(el) {
             el.addEventListener('pointerdown', function (e) {
                 if (e.button !== undefined && e.button !== 0) return;

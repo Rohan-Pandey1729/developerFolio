@@ -184,11 +184,43 @@
                     <a href="https://www.qorbitsystems.com/" class="venture-card venture-qorbit reveal" target="_blank" rel="noopener">
                         <span class="venture-glow" aria-hidden="true"></span>
                         <div class="venture-visual">
-                            <canvas class="venture-canvas" data-venture="qorbit" aria-hidden="true"></canvas>
-                            <div class="venture-telemetry" aria-hidden="true">
-                                <div class="telemetry-row"><span>T+</span><span class="telemetry-val" data-tel="time">0.000s</span></div>
-                                <div class="telemetry-row"><span>ALT</span><span class="telemetry-val" data-tel="alt">142 m</span></div>
-                                <div class="telemetry-row"><span>STATE</span><span class="telemetry-val telemetry-state" data-tel="state">ACTIVE</span></div>
+                            <!-- Flight trace as SVG + DOM labels: crisp at any density,
+                                 and the sequence runs on CSS keyframes so it cannot judder. -->
+                            <div class="qorbit" data-qorbit>
+                                <div class="qorbit-scene">
+                                    <svg class="qorbit-svg" aria-hidden="true">
+                                        <defs>
+                                            <linearGradient id="qbArea" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.26"/>
+                                                <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.04"/>
+                                                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <g class="qorbit-grid"></g>
+                                        <path class="qorbit-area"/>
+                                        <path class="qorbit-planned"/>
+                                        <path class="qorbit-ghost"/>
+                                        <path class="qorbit-boost"/>
+                                        <path class="qorbit-recovered"/>
+                                        <line class="qorbit-ground"/>
+                                    </svg>
+
+                                    <span class="qorbit-mark qorbit-mark--apogee"></span>
+                                    <span class="qorbit-mark qorbit-mark--deploy"></span>
+                                    <span class="qorbit-mark qorbit-mark--impact"></span>
+                                    <span class="qorbit-mark qorbit-mark--land"></span>
+
+                                    <span class="qorbit-tag qorbit-tag--apogee">Apogee · 245 m</span>
+                                    <span class="qorbit-tag qorbit-tag--fault">Primary — no fire</span>
+                                    <span class="qorbit-tag qorbit-tag--deploy">Backup fired</span>
+                                    <span class="qorbit-tag qorbit-tag--impact">Ballistic</span>
+                                    <span class="qorbit-tag qorbit-tag--land">Recovered</span>
+                                </div>
+                                <div class="venture-telemetry" aria-hidden="true">
+                                    <div class="telemetry-row"><span>ALT</span><span class="telemetry-val" data-tel="alt">0 m</span></div>
+                                    <div class="telemetry-row"><span>RESPONSE</span><span class="telemetry-val" data-tel="ms">—</span></div>
+                                    <div class="telemetry-row"><span>STATE</span><span class="telemetry-val telemetry-state" data-tel="state">PREFLIGHT</span></div>
+                                </div>
                             </div>
                         </div>
                         <div class="venture-body">

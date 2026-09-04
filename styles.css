@@ -1282,7 +1282,9 @@ html.space3d .hero-copy::before {
     }
 
     .venture-visual {
-        height: 180px;
+        /* Full-width card in the stacked layout, so the trace gets more room
+           than the old canvas needed. */
+        height: 240px;
     }
 
     .pipeline-node {
@@ -2237,4 +2239,317 @@ html.space3d .hero-copy::before {
     aspect-ratio: 700 / 380;
     outline: none;
     cursor: pointer;
+}
+
+/* ── Qorbit flight trace ──────────────────────────────────────────────
+   The whole sequence is one 6.5s CSS timeline shared by every element,
+   so they stay in lockstep and the motion runs on the compositor rather
+   than a JS frame loop. Curves are SVG (non-scaling strokes, pathLength
+   normalised to 100 so dashoffset is a percentage); every label is real
+   DOM text, so it renders as crisply as the copy below the card.
+
+   Beats, as a fraction of the cycle:
+     2.3%  liftoff        30.8% apogee      40%   primary fault
+     53.1% backup fires   66.2% impact      81.5% touchdown
+------------------------------------------------------------------------ */
+.qorbit {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 55% at 30% 8%, rgba(245, 158, 11, 0.07), transparent 70%),
+        linear-gradient(180deg, #070d18 0%, #050b15 100%);
+}
+
+.qorbit-scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Reserve for the telemetry bar, with margin — nothing on the trace may
+       sit underneath it. */
+    bottom: 78px;
+    animation: qb-cycle 6.5s linear infinite paused;
+}
+
+.qorbit-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* The viewBox is set to the element's pixel box by the driver, so the SVG
+   user space is 1:1 with CSS pixels. That keeps strokes uniform, the curves
+   undistorted, and — crucially — makes dash lengths comparable to the value
+   getTotalLength() reports, which is what --len carries. */
+.qorbit-svg {
+    stroke-linecap: round;
+}
+
+.qorbit-svg path,
+.qorbit-svg line { fill: none; }
+
+.qorbit-grid line { stroke: rgba(148, 163, 184, 0.075); stroke-width: 1; }
+.qorbit-ground { stroke: rgba(148, 163, 184, 0.3); stroke-width: 1; }
+
+.qorbit-planned {
+    stroke: rgba(245, 158, 11, 0.26);
+    stroke-width: 1.25;
+    stroke-dasharray: 3 4;
+}
+
+.qorbit-svg .qorbit-area {
+    fill: url(#qbArea);
+    stroke: none;
+    opacity: 0;
+}
+
+.qorbit-boost,
+.qorbit-recovered {
+    stroke: #f59e0b;
+    stroke-width: 2.25;
+    stroke-dasharray: var(--len, 1000);
+    stroke-dashoffset: var(--len, 1000);
+    filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.45));
+}
+
+.qorbit-ghost {
+    stroke: #f87171;
+    stroke-width: 1.5;
+    stroke-dasharray: var(--len, 1000);
+    stroke-dashoffset: var(--len, 1000);
+    opacity: 0.7;
+}
+
+/* ── Markers ─────────────────────────────────────────────────────── */
+.qorbit-mark {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.3);
+}
+
+.qorbit-mark--apogee { background: #fbbf24; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.16), 0 0 12px rgba(251, 191, 36, 0.8); }
+.qorbit-mark--deploy { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.16), 0 0 14px rgba(74, 222, 128, 0.85); }
+.qorbit-mark--impact { background: #f87171; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.16), 0 0 10px rgba(248, 113, 113, 0.7); }
+.qorbit-mark--land   { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.16), 0 0 12px rgba(74, 222, 128, 0.8); }
+
+/* Ignition ring — the moment the backup charge fires */
+.qorbit-mark--deploy::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(134, 239, 172, 0.9);
+    opacity: 0;
+}
+
+/* ── Labels ──────────────────────────────────────────────────────── */
+.qorbit-tag {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    transform: translate(12px, -50%);
+    white-space: nowrap;
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+    background: rgba(8, 13, 26, 0.9);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.qorbit-tag--apogee { color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.32); }
+.qorbit-tag--fault  { color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.4); }
+.qorbit-tag--deploy { color: #86efac; border: 1px solid rgba(74, 222, 128, 0.4); }
+
+/* The two outcomes sit on the baseline, so they label upward and away */
+.qorbit-tag--impact,
+.qorbit-tag--land {
+    background: none;
+    backdrop-filter: none;
+    border: 0;
+    padding: 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.qorbit-tag--impact { color: #f87171; transform: translate(-50%, -22px); }
+.qorbit-tag--land   { color: #4ade80; transform: translate(-50%, -22px); }
+
+/* ── The timeline ────────────────────────────────────────────────── */
+@keyframes qb-cycle {
+    0%, 3% { opacity: 1; }
+    95%    { opacity: 1; }
+    100%   { opacity: 0; }
+}
+
+@keyframes qb-boost {
+    0%, 2.3%    { stroke-dashoffset: var(--len, 1000); }
+    30.8%, 100% { stroke-dashoffset: 0; }
+}
+
+/* Two rates in one draw: the unpowered drop is quick, the canopy descent slow */
+@keyframes qb-recovered {
+    0%, 40%     { stroke-dashoffset: var(--len, 1000); }
+    53.1%       { stroke-dashoffset: calc(var(--len, 1000) * 0.62); }
+    81.5%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes qb-ghost {
+    0%, 40%     { stroke-dashoffset: var(--len, 1000); opacity: 0.7; }
+    66.2%, 100% { stroke-dashoffset: 0; opacity: 0.7; }
+}
+
+@keyframes qb-area {
+    0%, 53.1%   { opacity: 0; }
+    81.5%, 100% { opacity: 1; }
+}
+
+@keyframes qb-planned {
+    0%, 30.8% { opacity: 0; }
+    38%       { opacity: 1; }
+    53.1%     { opacity: 1; }
+    62%, 100% { opacity: 0.35; }
+}
+
+@keyframes qb-mark-apogee {
+    0%, 30.8%   { opacity: 0; transform: scale(0.3); }
+    34.5%       { opacity: 1; transform: scale(1.4); }
+    37%, 100%   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes qb-mark-deploy {
+    0%, 53.1%   { opacity: 0; transform: scale(0.3); }
+    56%         { opacity: 1; transform: scale(1.5); }
+    59%, 100%   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes qb-ring {
+    0%, 53.1% { opacity: 0; transform: scale(0.6); }
+    55%       { opacity: 1; }
+    64%, 100% { opacity: 0; transform: scale(4.2); }
+}
+
+@keyframes qb-mark-impact {
+    0%, 66.2%  { opacity: 0; transform: scale(0.3); }
+    69%        { opacity: 1; transform: scale(1.5); }
+    72%, 100%  { opacity: 1; transform: scale(1); }
+}
+
+@keyframes qb-mark-land {
+    0%, 81.5%  { opacity: 0; transform: scale(0.3); }
+    84%        { opacity: 1; transform: scale(1.4); }
+    87%, 100%  { opacity: 1; transform: scale(1); }
+}
+
+@keyframes qb-tag-apogee {
+    0%, 32%   { opacity: 0; transform: translate(4px, -50%); }
+    36%, 39%  { opacity: 1; transform: translate(12px, -50%); }
+    42%, 100% { opacity: 0; transform: translate(12px, -50%); }
+}
+
+@keyframes qb-tag-fault {
+    0%, 40%     { opacity: 0; transform: translate(4px, -50%); }
+    43.5%, 51%  { opacity: 1; transform: translate(12px, -50%); }
+    54%, 100%   { opacity: 0; transform: translate(12px, -50%); }
+}
+
+@keyframes qb-tag-deploy {
+    0%, 53.1%   { opacity: 0; transform: translate(4px, -50%); }
+    57%, 100%   { opacity: 1; transform: translate(12px, -50%); }
+}
+
+@keyframes qb-tag-impact {
+    0%, 66.2%  { opacity: 0; transform: translate(-50%, -14px); }
+    70%, 100%  { opacity: 1; transform: translate(-50%, -22px); }
+}
+
+@keyframes qb-tag-land {
+    0%, 81.5%  { opacity: 0; transform: translate(-50%, -14px); }
+    85%, 100%  { opacity: 1; transform: translate(-50%, -22px); }
+}
+
+/* Everything shares the one duration, and is parked until the card is seen. */
+.qorbit-boost,
+.qorbit-recovered,
+.qorbit-ghost,
+.qorbit-area,
+.qorbit-planned,
+.qorbit-mark,
+.qorbit-mark--deploy::after,
+.qorbit-tag {
+    animation-duration: 6.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+}
+
+.qorbit-boost     { animation-name: qb-boost; }
+.qorbit-recovered { animation-name: qb-recovered; }
+.qorbit-ghost     { animation-name: qb-ghost; }
+.qorbit-area      { animation-name: qb-area; }
+.qorbit-planned   { animation-name: qb-planned; }
+
+.qorbit-mark--apogee { animation-name: qb-mark-apogee; }
+.qorbit-mark--deploy { animation-name: qb-mark-deploy; }
+.qorbit-mark--deploy::after { animation-name: qb-ring; }
+.qorbit-mark--impact { animation-name: qb-mark-impact; }
+.qorbit-mark--land   { animation-name: qb-mark-land; }
+
+.qorbit-tag--apogee { animation-name: qb-tag-apogee; }
+.qorbit-tag--fault  { animation-name: qb-tag-fault; }
+.qorbit-tag--deploy { animation-name: qb-tag-deploy; }
+.qorbit-tag--impact { animation-name: qb-tag-impact; }
+.qorbit-tag--land   { animation-name: qb-tag-land; }
+
+.qorbit.is-running .qorbit-scene,
+.qorbit.is-running .qorbit-boost,
+.qorbit.is-running .qorbit-recovered,
+.qorbit.is-running .qorbit-ghost,
+.qorbit.is-running .qorbit-area,
+.qorbit.is-running .qorbit-planned,
+.qorbit.is-running .qorbit-mark,
+.qorbit.is-running .qorbit-mark--deploy::after,
+.qorbit.is-running .qorbit-tag {
+    animation-play-state: running;
+}
+
+/* Reduced motion: show the finished diagram, no sequence at all. */
+@media (prefers-reduced-motion: reduce) {
+    .qorbit-scene,
+    .qorbit-boost, .qorbit-recovered, .qorbit-ghost,
+    .qorbit-area, .qorbit-planned, .qorbit-mark, .qorbit-tag,
+    .qorbit-mark--deploy::after {
+        animation: none !important;
+    }
+    .qorbit-boost, .qorbit-recovered, .qorbit-ghost { stroke-dashoffset: 0 !important; }
+    .qorbit-svg .qorbit-area { opacity: 1; }
+    .qorbit-planned { opacity: 0.35; }
+    .qorbit-mark { opacity: 1; transform: scale(1); }
+    .qorbit-tag--apogee, .qorbit-tag--fault { opacity: 0; }
+    .qorbit-tag--deploy { opacity: 1; transform: translate(12px, -50%); }
+    .qorbit-tag--impact, .qorbit-tag--land { opacity: 1; transform: translate(-50%, -22px); }
+}
+
+@media (max-width: 520px) {
+    .qorbit-tag { font-size: 0.6rem; }
+    .qorbit-tag--impact, .qorbit-tag--land { font-size: 0.56rem; }
+}
+
+@media (max-width: 520px) {
+    .venture-visual {
+        height: 208px;
+    }
 }

@@ -248,6 +248,18 @@
         return { start: start, stop: stop, resize: measure };
     }
 
+    // ── Gauntlet: an adaptive attack, as a terminal ──────────────────────
+    // Entirely CSS (see "Gauntlet terminal" in styles.css). The HUD values are
+    // cross-faded on the same timeline, so there is no text to sync — this only
+    // parks the animation while the card is off screen.
+    function initGauntlet(root) {
+        return {
+            start: function () { root.classList.add('is-running'); },
+            stop: function () { root.classList.remove('is-running'); },
+            resize: function () {}
+        };
+    }
+
     // ── Lumina: neural research pipeline animation ──────────────────────
     function initLumina(canvas, card) {
         var ctx = canvas.getContext('2d');
@@ -411,10 +423,14 @@
     // ── Boot all venture canvases ───────────────────────────────────────
     var animators = [];
 
-    // Qorbit is an SVG/CSS scene; Lumina is still a canvas.
+    // Qorbit and Gauntlet are SVG/CSS scenes; Lumina is still a canvas.
     document.querySelectorAll('[data-qorbit]').forEach(function (root) {
         var anim = initQorbit(root, root.closest('.venture-card') || root);
         if (anim) animators.push({ el: root, anim: anim });
+    });
+
+    document.querySelectorAll('[data-gauntlet]').forEach(function (root) {
+        animators.push({ el: root, anim: initGauntlet(root) });
     });
 
     document.querySelectorAll('.venture-canvas').forEach(function (canvas) {

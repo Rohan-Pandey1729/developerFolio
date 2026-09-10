@@ -1036,13 +1036,16 @@ html.space3d .hero-copy::before {
 
 .ventures-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* minmax(0, …) not 1fr: a bare 1fr track has a min-content floor, and the
+       Gauntlet terminal's nowrap rows would push the column past the screen. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
     margin-top: 1.25rem;
 }
 
 .venture-card {
     position: relative;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -1278,7 +1281,7 @@ html.space3d .hero-copy::before {
 
 @media (max-width: 768px) {
     .ventures-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .venture-visual {
@@ -2552,4 +2555,361 @@ html.space3d .hero-copy::before {
     .venture-visual {
         height: 208px;
     }
+}
+
+/* ── Ventures: three across ──────────────────────────────────────────
+   With three companies the grid breaks out wider than the 920px text
+   column on desktop, so each card keeps a usable width. Margin rather
+   than a transform does the centring, which keeps text on whole pixels. */
+@media (min-width: 1100px) {
+    .ventures-grid,
+    .ventures-orbit-ring {
+        width: min(1180px, calc(100vw - 3rem));
+        margin-left: calc((100% - min(1180px, calc(100vw - 3rem))) / 2);
+    }
+
+    .ventures-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Two across in between: the newest venture takes the full row. */
+@media (min-width: 769px) and (max-width: 1099px) {
+    .venture-gauntlet {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Gauntlet's own brand accent: mint, with red reserved for a breach. */
+.venture-gauntlet .venture-glow {
+    background: radial-gradient(circle at 50% 30%, rgba(49, 224, 168, 0.17), transparent 55%);
+}
+
+.venture-gauntlet:hover {
+    border-color: rgba(49, 224, 168, 0.42);
+    box-shadow: 0 28px 64px rgba(0, 0, 0, 0.4), 0 0 48px rgba(49, 224, 168, 0.1);
+}
+
+.venture-gauntlet .venture-role {
+    color: #31e0a8;
+    background: rgba(49, 224, 168, 0.12);
+}
+
+.venture-gauntlet .venture-cta {
+    color: #31e0a8;
+}
+
+/* ── Gauntlet terminal ────────────────────────────────────────────────
+   One 8s timeline, same approach as the Qorbit trace: every row, status
+   and HUD value is plain DOM revealed by CSS keyframes, so it renders
+   crisply and cannot drift. Beats, as a fraction of the cycle:
+     3% command   16/28/40/52% queries 1-4   64% breach, build fails
+------------------------------------------------------------------------ */
+.gauntlet {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 60% at 88% 0%, rgba(49, 224, 168, 0.075), transparent 70%),
+        linear-gradient(180deg, #070d18 0%, #050b15 100%);
+}
+
+.gauntlet::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+}
+
+.gx-term {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 78px;
+    padding: 10px 16px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 11px;
+    line-height: 19px;
+    color: #aeb7c7;
+    animation: gx-cycle 8s linear infinite paused;
+}
+
+.gx-chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    margin-bottom: 2px;
+    font-size: 10px;
+    color: #4b5568;
+}
+
+.gx-chrome i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #222b3a;
+}
+
+.gx-chrome span {
+    margin-left: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gx-line,
+.gx-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    /* On the full-width card, keep each status beside its payload rather
+       than stranded at the far edge. */
+    max-width: 600px;
+    white-space: nowrap;
+}
+
+.gx-prompt { color: #31e0a8; }
+
+.gx-type,
+.gx-payload,
+.gx-secret {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gx-type { color: #eaeef5; }
+
+.gx-row {
+    margin: 0 -6px;
+    padding: 0 6px;
+    border-radius: 5px;
+    opacity: 0;
+}
+
+.gx-strat {
+    flex: none;
+    width: 34px;
+    text-align: center;
+    font-size: 9.5px;
+    line-height: 15px;
+    border-radius: 4px;
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.gx-strat.gx-pair {
+    color: #c9a2ff;
+    border-color: rgba(177, 92, 255, 0.45);
+    background: rgba(177, 92, 255, 0.1);
+}
+
+.gx-q {
+    flex: none;
+    color: #4b5568;
+}
+
+/* Hugs its text, then ellipsises when the card is narrow */
+.gx-payload {
+    flex: 0 1 auto;
+}
+
+.gx-status {
+    flex: none;
+    margin-left: auto;
+    padding-left: 6px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0;
+}
+
+.gx-blocked { color: #7a8598; }
+.gx-refused { color: #fbbf24; }
+.gx-leaked  { color: #ff5c6c; }
+
+.gx-result {
+    margin-top: 2px;
+    color: #ff5c6c;
+    font-weight: 700;
+    opacity: 0;
+}
+
+.gx-x { flex: none; }
+.gx-verdict { flex: none; }
+.gx-secret { font-weight: 400; color: rgba(255, 92, 108, 0.72); }
+
+/* HUD values: every state is present, stacked in one grid cell, and the
+   timeline cross-fades between them. */
+.gx-swap {
+    display: grid;
+}
+
+.gx-swap > b {
+    grid-area: 1 / 1;
+    font-weight: inherit;
+    white-space: nowrap;
+    opacity: 0;
+}
+
+.gx-s0, .gx-q0, .gx-b0 { opacity: 1; color: #7a8598; }
+.gx-s2 { color: #c9a2ff; }
+.gx-b1 { color: #fbbf24; }
+.gx-b2 { color: #ff5c6c; }
+
+/* ── Timeline ────────────────────────────────────────────────────── */
+@keyframes gx-cycle {
+    0%, 2%  { opacity: 0; }
+    3%, 95% { opacity: 1; }
+    100%    { opacity: 0; }
+}
+
+@keyframes gx-cmd {
+    0%, 3%   { clip-path: inset(0 100% 0 0); animation-timing-function: steps(18, end); }
+    12%, 100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes gx-row1 {
+    0%, 16%    { opacity: 0; transform: translateY(3px); }
+    17.2%, 100% { opacity: 1; transform: none; }
+}
+@keyframes gx-type1 {
+    0%, 16%    { clip-path: inset(0 100% 0 0); animation-timing-function: steps(22, end); }
+    23%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes gx-stat1 {
+    0%, 24.5%   { opacity: 0; transform: scale(0.7); }
+    25.7%     { opacity: 1; transform: scale(1.12); }
+    26.9%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes gx-row2 {
+    0%, 28%    { opacity: 0; transform: translateY(3px); }
+    29.2%, 100% { opacity: 1; transform: none; }
+}
+@keyframes gx-type2 {
+    0%, 28%    { clip-path: inset(0 100% 0 0); animation-timing-function: steps(22, end); }
+    35%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes gx-stat2 {
+    0%, 36.5%   { opacity: 0; transform: scale(0.7); }
+    37.7%     { opacity: 1; transform: scale(1.12); }
+    38.9%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes gx-row3 {
+    0%, 40%    { opacity: 0; transform: translateY(3px); }
+    41.2%, 100% { opacity: 1; transform: none; }
+}
+@keyframes gx-type3 {
+    0%, 40%    { clip-path: inset(0 100% 0 0); animation-timing-function: steps(22, end); }
+    47%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes gx-stat3 {
+    0%, 48.5%   { opacity: 0; transform: scale(0.7); }
+    49.7%     { opacity: 1; transform: scale(1.12); }
+    50.9%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes gx-row4 {
+    0%, 52%    { opacity: 0; transform: translateY(3px); }
+    53.2%, 100% { opacity: 1; transform: none; }
+}
+@keyframes gx-type4 {
+    0%, 52%    { clip-path: inset(0 100% 0 0); animation-timing-function: steps(22, end); }
+    59%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes gx-stat4 {
+    0%, 60.5%   { opacity: 0; transform: scale(0.7); }
+    61.7%     { opacity: 1; transform: scale(1.12); }
+    62.9%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes gx-leak-row {
+    0%, 60.5%   { background: transparent; }
+    62%     { background: rgba(255, 92, 108, 0.2); }
+    65.5%, 100% { background: rgba(255, 92, 108, 0.09); }
+}
+
+@keyframes gx-result {
+    0%, 64%   { opacity: 0; transform: translateX(-4px); }
+    65.5%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes kf-gx-s0 { 0%, 16% { opacity: 1; } 16.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-s1 { 0%, 16% { opacity: 0; } 16.6%, 40% { opacity: 1; } 40.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-s2 { 0%, 40% { opacity: 0; } 40.6%, 100% { opacity: 1; } }
+@keyframes kf-gx-q0 { 0%, 16% { opacity: 1; } 16.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-q1 { 0%, 16% { opacity: 0; } 16.6%, 28% { opacity: 1; } 28.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-q2 { 0%, 28% { opacity: 0; } 28.6%, 40% { opacity: 1; } 40.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-q3 { 0%, 40% { opacity: 0; } 40.6%, 52% { opacity: 1; } 52.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-q4 { 0%, 52% { opacity: 0; } 52.6%, 100% { opacity: 1; } }
+@keyframes kf-gx-b0 { 0%, 3% { opacity: 1; } 3.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-b1 { 0%, 3% { opacity: 0; } 3.6%, 64% { opacity: 1; } 64.6%, 100% { opacity: 0; } }
+@keyframes kf-gx-b2 { 0%, 64% { opacity: 0; } 64.6%, 100% { opacity: 1; } }
+
+.gauntlet .gx-type,
+.gauntlet .gx-row,
+.gauntlet .gx-payload,
+.gauntlet .gx-status,
+.gauntlet .gx-result,
+.gauntlet .gx-swap > b {
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+}
+
+.gauntlet .gx-type { animation-name: gx-cmd; }
+.gauntlet .gx-r1 { animation-name: gx-row1; }
+.gauntlet .gx-r2 { animation-name: gx-row2; }
+.gauntlet .gx-r3 { animation-name: gx-row3; }
+.gauntlet .gx-r4 { animation-name: gx-row4, gx-leak-row; }
+.gauntlet .gx-r1 .gx-payload { animation-name: gx-type1; }
+.gauntlet .gx-r2 .gx-payload { animation-name: gx-type2; }
+.gauntlet .gx-r3 .gx-payload { animation-name: gx-type3; }
+.gauntlet .gx-r4 .gx-payload { animation-name: gx-type4; }
+.gauntlet .gx-r1 .gx-status { animation-name: gx-stat1; }
+.gauntlet .gx-r2 .gx-status { animation-name: gx-stat2; }
+.gauntlet .gx-r3 .gx-status { animation-name: gx-stat3; }
+.gauntlet .gx-r4 .gx-status { animation-name: gx-stat4; }
+.gauntlet .gx-result { animation-name: gx-result; }
+.gauntlet .gx-s0 { animation-name: kf-gx-s0; }
+.gauntlet .gx-s1 { animation-name: kf-gx-s1; }
+.gauntlet .gx-s2 { animation-name: kf-gx-s2; }
+.gauntlet .gx-q0 { animation-name: kf-gx-q0; }
+.gauntlet .gx-q1 { animation-name: kf-gx-q1; }
+.gauntlet .gx-q2 { animation-name: kf-gx-q2; }
+.gauntlet .gx-q3 { animation-name: kf-gx-q3; }
+.gauntlet .gx-q4 { animation-name: kf-gx-q4; }
+.gauntlet .gx-b0 { animation-name: kf-gx-b0; }
+.gauntlet .gx-b1 { animation-name: kf-gx-b1; }
+.gauntlet .gx-b2 { animation-name: kf-gx-b2; }
+
+.gauntlet.is-running .gx-term,
+.gauntlet.is-running .gx-type,
+.gauntlet.is-running .gx-row,
+.gauntlet.is-running .gx-payload,
+.gauntlet.is-running .gx-status,
+.gauntlet.is-running .gx-result,
+.gauntlet.is-running .gx-swap > b {
+    animation-play-state: running;
+}
+
+/* Reduced motion: the finished attack, no sequence. */
+@media (prefers-reduced-motion: reduce) {
+    .gx-term, .gx-type, .gx-row, .gx-payload, .gx-status, .gx-result, .gx-swap > b {
+        animation: none !important;
+    }
+    .gx-row, .gx-status, .gx-result { opacity: 1; }
+    .gx-r4 { background: rgba(255, 92, 108, 0.09); }
+    .gx-s0, .gx-s1, .gx-q0, .gx-q1, .gx-q2, .gx-q3, .gx-b0, .gx-b1 { opacity: 0; }
+    .gx-s2, .gx-q4, .gx-b2 { opacity: 1; }
+}
+
+/* Short visual on phones: drop the window chrome to fit six lines. */
+@media (max-width: 520px) {
+    .gx-chrome { display: none; }
+    .gx-term { padding-top: 8px; font-size: 10.5px; line-height: 18px; }
 }

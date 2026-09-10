@@ -96,7 +96,12 @@
         { id: 'optim', d: 'math', t: 2024.2, w: 0.6, name: 'Mathematical optimization', note: 'The shared language under the RL, the ODEs, and the pipelines.', href: '#about' },
         { id: 'poly', d: 'math', t: 2025.8, w: 0.6, name: 'Polynomial synthesis', note: 'Efficient arithmetic circuits for degree-m polynomials.', href: '#experience' },
         { id: 'regress', d: 'math', t: 2024.95, w: 0.4, name: 'Regression & loss design', note: 'Fitting models to messy, real, patient-derived data.', href: '#experience' },
-        { id: 'symbolic', d: 'math', t: 2026.4, w: 0.45, name: 'Symbolic systems', note: 'Where the algebra and the learned policy meet.', href: '#about' }
+        { id: 'symbolic', d: 'math', t: 2026.4, w: 0.45, name: 'Symbolic systems', note: 'Where the algebra and the learned policy meet.', href: '#about' },
+
+        // Gauntlet — appended last so the seeded layout of everything above barely moves
+        { id: 'gauntlet', d: 'ml', t: 2026.44, w: 0.95, name: 'Gauntlet', note: 'Founder. Adaptive red-teaming for AI agents — an attacker that evolves until the agent breaks, then fails the build.', href: 'https://rohan-pandey1729.github.io/gauntlet-site/' },
+        { id: 'redteam', d: 'ml', t: 2026.46, w: 0.5, name: 'Adaptive red-teaming', note: 'Best-of-N, PAIR, TAP, Crescendo and Rainbow Teaming, adapted from the published research.', href: '#ventures' },
+        { id: 'cigate', d: 'sys', t: 2026.5, w: 0.45, name: 'CI security gate', note: 'Any breach exits nonzero, so a fixed hole stays fixed.', href: '#ventures' }
     ];
 
     var EDGES = [
@@ -125,7 +130,12 @@
 
         // cross-domain bridges — the parts of the map that actually connect
         ['qorbit', 'do'], ['lumina', 'bench'], ['lumina', 'mathai'],
-        ['rl', 'flightsim'], ['vector', 'pytorch'], ['bci', 'rl']
+        ['rl', 'flightsim'], ['vector', 'pytorch'], ['bci', 'rl'],
+
+        // Gauntlet: tree-search attacks (TAP) are search over a policy, and the
+        // product ships as developer tooling
+        ['gauntlet', 'redteam'], ['gauntlet', 'transformer'], ['gauntlet', 'cigate'],
+        ['redteam', 'mcts'], ['redteam', 'rl'], ['cigate', 'devtools']
     ];
 
     var byId = {};

@@ -154,19 +154,25 @@
     }
 
     var CLUSTERS = {
-        math: { x: 0.26, y: 0.20 },
-        sys: { x: 0.74, y: 0.24 },
+        math: { x: 0.18, y: 0.17 },
+        sys: { x: 0.80, y: 0.19 },
         ml: { x: 0.50, y: 0.50 },
-        bio: { x: 0.24, y: 0.76 },
-        aero: { x: 0.76, y: 0.74 }
+        bio: { x: 0.17, y: 0.81 },
+        aero: { x: 0.82, y: 0.80 }
     };
+
+    // Bigger domains get more room, so the busy ML cluster does not end up
+    // as dense as the five-point math one.
+    var SPREAD = {};
+    NODES.forEach(function (n) { SPREAD[n.d] = (SPREAD[n.d] || 0) + 1; });
+    Object.keys(SPREAD).forEach(function (d) { SPREAD[d] = 0.034 * Math.sqrt(SPREAD[d]); });
 
     function layout() {
         var rnd = mulberry32(20260903);
         NODES.forEach(function (n, i) {
             var c = CLUSTERS[n.d];
             var ang = rnd() * Math.PI * 2;
-            var rad = 0.05 + Math.pow(rnd(), 0.7) * 0.15;
+            var rad = SPREAD[n.d] * (0.3 + 0.7 * Math.pow(rnd(), 0.7));
             n.px = c.x + Math.cos(ang) * rad;
             n.py = c.y + Math.sin(ang) * rad * 0.9;
             n.idx = i;
@@ -182,7 +188,8 @@
                     var d2 = dx * dx + dy * dy;
                     if (d2 < 1e-7) { dx = 0.001; dy = 0.001; d2 = 2e-6; }
                     var d = Math.sqrt(d2);
-                    var min = 0.055;
+                    // Wider berth between domains keeps the clusters apart.
+                    var min = a.d === b.d ? 0.075 : 0.12;
                     if (d < min) {
                         var push = (min - d) * 0.22;
                         var ux = dx / d, uy = dy / d;
@@ -194,7 +201,7 @@
             LINKS.forEach(function (l) {
                 var dx = l.b.px - l.a.px, dy = l.b.py - l.a.py;
                 var d = Math.hypot(dx, dy) || 1e-4;
-                var target = l.a.d === l.b.d ? 0.09 : 0.30;
+                var target = l.a.d === l.b.d ? 0.1 : 0.34;
                 var k = (d - target) * (l.a.d === l.b.d ? 0.045 : 0.012);
                 var ux = dx / d, uy = dy / d;
                 l.a.px += ux * k; l.a.py += uy * k;
@@ -247,6 +254,7 @@
         PAD_B = Math.max(PAD, (foot ? foot.offsetHeight : 0) + 12);
         labelPx = W < 460 ? 8.5 : 10;
         project();
+        placeLabels();
     }
 
     function project() {
@@ -256,6 +264,61 @@
             n.y = PAD_T + n.py * ih;
             n.r = 2.6 + n.w * 5.4;
         });
+    }
+
+    // ── Anchor labels ───────────────────────────────────────────────────
+    // The biggest threads keep a standing label. Each one tries above, below,
+    // beside, then diagonal to its point, stepping further out if the close
+    // spots are taken, and takes the first that clears the labels already
+    // placed and every other point. If none is fully clear (a hub in the
+    // middle of its cluster), it takes the spot covering the fewest points;
+    // it never overlaps another label.
+    function placeLabels() {
+        ctx.font = '600 ' + labelPx + 'px "DM Sans", system-ui, sans-serif';
+        var placed = [];
+        var gap = 7;
+        NODES.filter(function (n) { return n.w >= 0.95; })
+            .sort(function (a, b) { return b.w - a.w; })
+            .forEach(function (n) {
+                var text = n.name.toUpperCase();
+                var tw = ctx.measureText(text).width, th = labelPx;
+                var spots = [];
+                [0, 10, 20].forEach(function (off) {
+                    var g = n.r + gap + off;
+                    spots.push(
+                        { x: n.x, y: n.y - g, al: 'center' },
+                        { x: n.x, y: n.y + g + th, al: 'center' },
+                        { x: n.x + g, y: n.y + th * 0.35, al: 'left' },
+                        { x: n.x - g, y: n.y + th * 0.35, al: 'right' },
+                        { x: n.x + g * 0.7, y: n.y - g * 0.7, al: 'left' },
+                        { x: n.x - g * 0.7, y: n.y - g * 0.7, al: 'right' },
+                        { x: n.x + g * 0.7, y: n.y + g * 0.7 + th, al: 'left' },
+                        { x: n.x - g * 0.7, y: n.y + g * 0.7 + th, al: 'right' }
+                    );
+                });
+                var best = null, bestHits = Infinity;
+                for (var i = 0; i < spots.length && bestHits > 0; i++) {
+                    var sp = spots[i];
+                    var x0 = sp.al === 'center' ? sp.x - tw / 2 : (sp.al === 'left' ? sp.x : sp.x - tw);
+                    var box = { x0: x0 - 3, y0: sp.y - th - 2, x1: x0 + tw + 3, y1: sp.y + 3 };
+                    if (box.x0 < 2 || box.x1 > W - 2 || box.y0 < 2 || box.y1 > H - PAD_B) continue;
+                    if (placed.some(function (b) {
+                        return box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0;
+                    })) continue;
+                    var hits = NODES.filter(function (m) {
+                        if (m === n) return false;
+                        var cx = Math.max(box.x0, Math.min(m.x, box.x1));
+                        var cy = Math.max(box.y0, Math.min(m.y, box.y1));
+                        return Math.hypot(m.x - cx, m.y - cy) < m.r + 2;
+                    }).length;
+                    if (hits < bestHits) { bestHits = hits; best = { box: box, sp: sp }; }
+                }
+                n.label = null;
+                if (best) {
+                    placed.push(best.box);
+                    n.label = { text: text, x: best.sp.x, y: best.sp.y, al: best.sp.al };
+                }
+            });
     }
 
     // ── Timeline ────────────────────────────────────────────────────────
@@ -434,13 +497,13 @@
             var twinkle = reducedMotion ? 1 : 0.9 + 0.1 * Math.sin(t * 1.6 + n.idx);
             var r = n.r * pop * twinkle * (isHover ? 1.5 : 1);
 
-            // halo
-            var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * (isHover ? 6 : 4.2));
-            grd.addColorStop(0, rgba(rgb, 0.42 * a * dim));
+            // halo — kept tight so neighbouring points don't merge into a blob
+            var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * (isHover ? 5 : 2.8));
+            grd.addColorStop(0, rgba(rgb, (isHover ? 0.42 : 0.26) * a * dim));
             grd.addColorStop(1, rgba(rgb, 0));
             ctx.fillStyle = grd;
             ctx.beginPath();
-            ctx.arc(n.x, n.y, r * (isHover ? 6 : 4.2), 0, Math.PI * 2);
+            ctx.arc(n.x, n.y, r * (isHover ? 5 : 2.8), 0, Math.PI * 2);
             ctx.fill();
 
             // core
@@ -457,17 +520,17 @@
                 ctx.stroke();
             }
 
-            // Anchors — the biggest threads keep a standing label. A dark halo
-            // keeps them readable where they cross a neighbouring cluster.
-            if (n.w >= 0.95 && a > 0.6 && !hovered) {
+            // Anchor label, at the spot placeLabels() found for it. A dark
+            // halo keeps it readable where it crosses an edge.
+            if (n.label && a > 0.6 && !hovered) {
                 ctx.font = '600 ' + labelPx + 'px "DM Sans", system-ui, sans-serif';
-                ctx.textAlign = 'center';
+                ctx.textAlign = n.label.al;
                 ctx.lineJoin = 'round';
                 ctx.lineWidth = 3;
                 ctx.strokeStyle = 'rgba(9,14,28,' + (0.85 * a).toFixed(2) + ')';
-                ctx.strokeText(n.name.toUpperCase(), n.x, n.y - r - 10);
+                ctx.strokeText(n.label.text, n.label.x, n.label.y);
                 ctx.fillStyle = 'rgba(226,232,240,' + (0.62 * a).toFixed(2) + ')';
-                ctx.fillText(n.name.toUpperCase(), n.x, n.y - r - 10);
+                ctx.fillText(n.label.text, n.label.x, n.label.y);
                 ctx.textAlign = 'left';
             }
         }
@@ -519,10 +582,24 @@
         if (rafId) cancelAnimationFrame(rafId);
     }
 
+    // Resizing the canvas wipes it, so repaint whenever the loop is not
+    // running to do it (reduced motion, or the map is off screen).
+    function refresh() {
+        resize();
+        if (!running) draw();
+    }
+
     resize();
+    // Labels are measured in DM Sans; re-place them once it has loaded.
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+            placeLabels();
+            if (!running) draw();
+        });
+    }
     window.addEventListener('resize', function () {
         dpr = Math.min(2, window.devicePixelRatio || 1);
-        resize();
+        refresh();
     });
 
     if (reducedMotion) {

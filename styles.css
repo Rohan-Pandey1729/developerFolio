@@ -2138,6 +2138,11 @@ html.space3d .hero-copy::before {
     gap: 0.5rem;
 }
 
+.footer-links {
+    display: flex;
+    gap: 1.25rem;
+}
+
 .footer p,
 .footer a {
     font-size: 0.9rem;

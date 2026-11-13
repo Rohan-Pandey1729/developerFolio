@@ -115,7 +115,7 @@
                         </div>
                         <div class="tmap-scrub" role="slider" tabindex="0"
                              aria-label="Scrub the timeline"
-                             aria-valuemin="2022" aria-valuemax="2026.75" aria-valuenow="2026.75">
+                             aria-valuemin="2022" aria-valuemax="2026.9" aria-valuenow="2026.9">
                             <span class="tmap-scrub-track" aria-hidden="true"></span>
                             <span class="tmap-scrub-fill" aria-hidden="true"></span>
                         </div>
@@ -141,8 +141,9 @@
                         </div>
                         <ul class="now-list">
                             <li><strong>Founding</strong> <a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">Qorbit Systems</a> &amp; <a href="https://www.lumina-research.com/" target="_blank" rel="noopener">Lumina Research</a></li>
-                            <li><strong>Building</strong> at DigitalOcean — cloud infrastructure & developer tools</li>
-                            <li><strong>Research</strong> in RL + symbolic systems (GNNs, PPO, verification)</li>
+                            <li><strong>Building</strong> at DigitalOcean — dedicated GPU inference (vLLM, prefill/decode disaggregation)</li>
+                            <li><strong>Research</strong> in RL post-training &amp; verification — <a href="https://openreview.net/forum?id=A9zExL5cqH" target="_blank" rel="noopener">NeurIPS 2026 workshop paper</a> on reward hacking in RLVR</li>
+                            <li><strong>Speaking</strong> — <a href="https://youtu.be/cWrYEBlWpcY" target="_blank" rel="noopener">AI Engineer Code Summit</a> talk on LLM settings that only win on paper</li>
                             <li><strong>Mentoring</strong> at <a href="https://anchor-high.vercel.app/" target="_blank" rel="noopener">Anchor High</a> — research, internships &amp; admissions</li>
                         </ul>
                         <div class="now-actions">
@@ -154,8 +155,8 @@
                     <div class="now-mini reveal">
                         <div class="now-mini-row"><span>Location</span><span>Seattle, WA</span></div>
                         <div class="now-mini-row"><span>Timezone</span><span>America/Los_Angeles</span></div>
-                        <div class="now-mini-row"><span>Currently</span><span>BS/MS ACMS @ UW</span></div>
-                        <div class="now-mini-row"><span>Focus</span><span>RL · Systems · Bio/NeuroAI</span></div>
+                        <div class="now-mini-row"><span>Currently</span><span>M.S. ACMS @ UW</span></div>
+                        <div class="now-mini-row"><span>Focus</span><span>RL · LLM Inference · Post-Training</span></div>
                     </div>
                 </div>
             </div>
@@ -279,20 +280,21 @@
                 <h2 class="section-title"><span class="section-title-line"></span>About</h2>
                 <div class="about-grid">
                     <div class="about-text reveal">
-                        <p>I'm an incoming BS/MS student in Applied &amp; Computational Mathematical Sciences (ACMS) at the University of Washington and a Research Scientist and ML Engineer. I minored in Neural Computation and Engineering, with a focus on AI in neuroscience.</p>
-                        <p>I'm also the founder of <a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">Qorbit Systems</a> (smarter recovery for model rocketry) and <a href="https://www.lumina-research.com/" target="_blank" rel="noopener">Lumina Research</a> (AI-powered research education). My technical work spans reinforcement learning for polynomial synthesis (GNNs, PPO), cancer modeling for CAR T-cell therapy, and deep learning for robust systems.</p>
+                        <p>I'm an M.S. student in Applied &amp; Computational Mathematical Sciences (ACMS) at the University of Washington, where I also completed my B.S. in 2026, and a Software Engineer on DigitalOcean's Dedicated Inference team. I minored in Neural Computation and Engineering, with a focus on AI in neuroscience.</p>
+                        <p>I'm also the founder of <a href="https://www.qorbitsystems.com/" target="_blank" rel="noopener">Qorbit Systems</a> (smarter recovery for model rocketry) and <a href="https://www.lumina-research.com/" target="_blank" rel="noopener">Lumina Research</a> (AI-powered research education). My technical work spans RL post-training and reward hacking in RLVR, reinforcement learning for polynomial synthesis (GNNs, PPO, MCTS), GPU inference serving, and cancer modeling for CAR T-cell therapy.</p>
                         <p>When I'm not in the lab or building rockets, I'm on the tennis court or winning at Monopoly. I'm always up for collaborating and exploring new tech.</p>
                     </div>
                     <div class="skills reveal">
                         <h3 class="skills-heading">Skills & expertise</h3>
                         <div class="skill-tags">
                             <span class="skill-tag">Reinforcement Learning</span>
-                            <span class="skill-tag">Graph Neural Networks</span>
+                            <span class="skill-tag">LLM Post-Training · RLVR</span>
                             <span class="skill-tag">PPO · MCTS</span>
-                            <span class="skill-tag">Deep Learning</span>
-                            <span class="skill-tag">Cancer Research</span>
+                            <span class="skill-tag">Graph Neural Networks</span>
+                            <span class="skill-tag">LLM Inference · vLLM</span>
+                            <span class="skill-tag">CUDA · Kubernetes</span>
                             <span class="skill-tag">Mathematical Optimization</span>
-                            <span class="skill-tag">PyTorch · TensorFlow</span>
+                            <span class="skill-tag">PyTorch</span>
                             <span class="skill-tag">Python · C++ · SQL</span>
                         </div>
                     </div>
@@ -311,10 +313,13 @@
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>Building and scaling cloud infrastructure and developer tools at DigitalOcean.</p>
+                            <p>Dedicated Inference team: benchmarking, serving architecture, and performance for DigitalOcean's dedicated GPU fleet.</p>
                             <ul>
-                                <li>Systems design, reliability, and performance work across production services</li>
-                                <li>Developer experience improvements: APIs, tooling, and automation</li>
+                                <li>Own inference benchmarking: orchestrate vLLM on Kubernetes to measure throughput and latency across hardware, model, and concurrency configurations; results set capacity, routing, and SLA decisions</li>
+                                <li>Built DigitalOcean's first prefill/decode (PD) disaggregation setup with KV cache reuse via LMCache, cutting time-to-first-token and raising sustained throughput</li>
+                                <li>Building a Model Optimization Tool that profiles and tunes GPU kernels via LLM tool-use, automated benchmarking, and structured search</li>
+                                <li>Own fleet observability (Prometheus, Grafana, PagerDuty) and debug GPU, Linux, and network performance regressions</li>
+                                <li>Co-presented <a href="https://youtu.be/cWrYEBlWpcY" target="_blank" rel="noopener">Stop Shipping LLM Settings That Only Win on Paper</a> at AI Engineer Code Summit (4K YouTube views)</li>
                             </ul>
                         </div>
                     </details>
@@ -353,15 +358,15 @@
 
                     <details class="timeline-item reveal">
                         <summary class="timeline-summary">
-                            <span class="timeline-summary-main"><strong>Research Assistant</strong> · Math AI Lab, UW</span>
+                            <span class="timeline-summary-main"><strong>Lead Reinforcement Learning Researcher</strong> · Math AI Lab, UW</span>
                             <span class="timeline-summary-dates">Sep 2025 – Present</span>
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
-                            <p>Designing a reinforcement learning framework to synthesize efficient arithmetic circuits for polynomials, achieving ~70% success on degree-m polynomials.</p>
+                            <p>Formulated arithmetic-circuit synthesis as a single-player RL game; a PPO + Graph Neural Network agent reaches ~70% success on degree-3 polynomials via curriculum learning, shaped rewards, and symbolic verification.</p>
                             <ul>
-                                <li>PPO + GNNs with curriculum learning and symbolic verification; scaling to higher-degree synthesis with Monte Carlo Tree Search to improve sample efficiency</li>
-                                <li>Preparing open-source benchmarks and targeting submission to ICLR/ICML/NeurIPS</li>
+                                <li>Scaled to higher-degree synthesis with MCTS + AlphaZero-style self-play and a reusable library of factorizable subexpressions as recursive subgoals; ablated against SAC baselines</li>
+                                <li>First author at ICML 2026 (AI for Math Workshop) and ICLR 2026 (RSI Workshop)</li>
                             </ul>
                         </div>
                     </details>
@@ -394,8 +399,8 @@
 
                     <details class="timeline-item reveal">
                         <summary class="timeline-summary">
-                            <span class="timeline-summary-main"><strong>Data Scientist Intern</strong> · Fred Hutch</span>
-                            <span class="timeline-summary-dates">Aug 2024 – Jan 2026</span>
+                            <span class="timeline-summary-main"><strong>Applied Mathematics Researcher</strong> · Fred Hutch</span>
+                            <span class="timeline-summary-dates">Aug 2024 – Dec 2025</span>
                             <span class="timeline-summary-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
                         </summary>
                         <div class="timeline-details">
@@ -503,7 +508,12 @@
                     <div class="publications-card-inner">
                         <span class="publications-icon"><i class="fas fa-book-open"></i></span>
                         <h3 class="publications-title">View all research</h3>
-                        <p class="publications-desc">Browse published work, in-progress reports, and posters on my publications site.</p>
+                        <p class="publications-desc">17 papers and preprints, including first-author workshop papers at NeurIPS, ICML, and ICLR 2026, plus research posters.</p>
+                        <ul class="publications-venues" aria-label="Conference workshop papers">
+                            <li>NeurIPS 2026</li>
+                            <li>ICML 2026</li>
+                            <li>ICLR 2026 ×2</li>
+                        </ul>
                         <span class="publications-cta-text">Open publications site <i class="fas fa-external-link-alt"></i></span>
                     </div>
                 </a>

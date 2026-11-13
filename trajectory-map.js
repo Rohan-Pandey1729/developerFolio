@@ -37,7 +37,7 @@
     };
 
     var T0 = 2022.0;   // start of the timeline
-    var T1 = 2026.75;  // "now"
+    var T1 = 2026.9;   // "now"
 
     // ── The map data ────────────────────────────────────────────────────
     // t: decimal year the thread started. w: visual weight (0–1).
@@ -58,13 +58,14 @@
         { id: 'ddpg', d: 'ml', t: 2024.8, w: 0.4, name: 'DDPG', note: 'Continuous-control agents under complex physical dynamics.', href: '#experience' },
         { id: 'pytorch', d: 'ml', t: 2024.3, w: 0.4, name: 'PyTorch', note: 'Primary training stack.', href: '#about' },
         { id: 'tf', d: 'ml', t: 2024.3, w: 0.3, name: 'TensorFlow', note: 'Secondary training stack.', href: '#about' },
-        { id: 'mathai', d: 'ml', t: 2025.7, w: 1.0, name: 'Math AI Lab, UW', note: 'Research Assistant. RL framework for synthesizing efficient arithmetic circuits.', href: '#experience' },
+        { id: 'mathai', d: 'ml', t: 2025.7, w: 1.0, name: 'Math AI Lab, UW', note: 'Lead RL Researcher. RL framework for synthesizing efficient arithmetic circuits.', href: '#experience' },
         { id: 'ppo', d: 'ml', t: 2025.75, w: 0.55, name: 'PPO', note: 'Policy optimization over circuit-construction actions.', href: '#experience' },
         { id: 'gnn', d: 'ml', t: 2025.75, w: 0.6, name: 'Graph neural networks', note: 'Circuits are graphs — so the policy reads them as graphs.', href: '#experience' },
-        { id: 'curriculum', d: 'ml', t: 2025.85, w: 0.4, name: 'Curriculum learning', note: 'Staged difficulty to reach ~70% success on degree-m polynomials.', href: '#experience' },
+        { id: 'curriculum', d: 'ml', t: 2025.85, w: 0.4, name: 'Curriculum learning', note: 'Staged difficulty to reach ~70% success on degree-3 polynomials.', href: '#experience' },
         { id: 'mcts', d: 'ml', t: 2026.3, w: 0.55, name: 'Monte Carlo tree search', note: 'Search on top of the policy to improve sample efficiency at higher degree.', href: '#experience' },
         { id: 'verify', d: 'ml', t: 2026.35, w: 0.45, name: 'Symbolic verification', note: 'Every synthesized circuit is checked symbolically, not just empirically.', href: '#experience' },
-        { id: 'bench', d: 'ml', t: 2026.5, w: 0.5, name: 'Open-source benchmarks', note: 'Preparing benchmarks and targeting ICLR / ICML / NeurIPS.', href: '#publications' },
+        { id: 'bench', d: 'ml', t: 2026.5, w: 0.5, name: 'ICLR & ICML 2026', note: 'First-author workshop papers: CircuitBuilder (ICLR RSI) and FactorLibrary (ICML AI for Math).', href: '#publications' },
+        { id: 'neurips', d: 'ml', t: 2026.78, w: 0.6, name: 'NeurIPS 2026 workshop', note: 'Wrong the Same Way: when cross-prompt sharing suppresses vs. amplifies reward hacking in RLVR.', href: 'https://openreview.net/forum?id=A9zExL5cqH' },
         { id: 'mercor', d: 'ml', t: 2025.95, w: 0.6, name: 'Mercor — ML Engineer', note: 'End-to-end pipeline for large-scale text sentiment analysis.', href: '#experience' },
         { id: 'transformer', d: 'ml', t: 2026.05, w: 0.45, name: 'Transformer fine-tuning', note: 'Domain-specific fine-tuning with custom scoring metrics.', href: '#experience' },
 
@@ -73,7 +74,7 @@
         { id: 'mindco', d: 'bio', t: 2024.7, w: 0.65, name: 'MINDCO LABS', note: 'Real-time eye tracking fused with EEG to decode gaze to text.', href: '#experience' },
         { id: 'eeg', d: 'bio', t: 2024.72, w: 0.5, name: 'EEG decoding', note: 'Deep learning on live headset signals.', href: '#experience' },
         { id: 'bci', d: 'bio', t: 2024.8, w: 0.5, name: 'Brain–computer interfaces', note: 'Gaze-to-text as a BCI input channel.', href: '#experience' },
-        { id: 'fredhutch', d: 'bio', t: 2024.6, w: 0.95, name: 'Fred Hutch', note: 'Data Scientist Intern. Mathematical models of CAR T-cell and tumor interaction.', href: '#experience' },
+        { id: 'fredhutch', d: 'bio', t: 2024.6, w: 0.95, name: 'Fred Hutch', note: 'Applied Mathematics Researcher. Mathematical models of CAR T-cell and tumor interaction.', href: '#experience' },
         { id: 'cart', d: 'bio', t: 2024.65, w: 0.6, name: 'CAR T-cell modeling', note: 'Treatment efficacy modeled on patient-derived B-ALL data.', href: '#experience' },
         { id: 'ode', d: 'bio', t: 2024.9, w: 0.5, name: 'ODE systems', note: 'Coupled ODEs fit by regression and loss optimization.', href: '#experience' },
         { id: 'neuraltrace', d: 'bio', t: 2025.4, w: 0.7, name: 'NeuralTrace', note: 'Top project, NeuroAI Hackathon. Live EEG in the browser, 3D brain, no backend.', href: '/developerFolio/case-studies/neuraltrace/' },
@@ -85,16 +86,18 @@
         { id: 'vector', d: 'sys', t: 2025.5, w: 0.4, name: 'Vectorization & parallel I/O', note: 'Latency work on data pipelines.', href: '#experience' },
         { id: 'huskymaps', d: 'sys', t: 2025.6, w: 0.7, name: 'Husky Maps', note: 'Winner, UW Claude Hackathon 2025. Indoor shortcuts across campus.', href: '/developerFolio/case-studies/husky-maps/' },
         { id: 'webserial', d: 'sys', t: 2025.42, w: 0.3, name: 'Web Serial API', note: 'Hardware straight into the browser — no native app.', href: '/developerFolio/case-studies/neuraltrace/' },
-        { id: 'do', d: 'sys', t: 2026.2, w: 1.0, name: 'DigitalOcean', note: 'Software Engineer II. Cloud infrastructure and developer tools at scale.', href: '#experience' },
-        { id: 'cloud', d: 'sys', t: 2026.25, w: 0.5, name: 'Cloud infrastructure', note: 'Systems design, reliability, and performance across production services.', href: '#experience' },
-        { id: 'devtools', d: 'sys', t: 2026.3, w: 0.45, name: 'Developer tooling', note: 'APIs, tooling, and automation for developer experience.', href: '#experience' },
+        { id: 'do', d: 'sys', t: 2026.2, w: 1.0, name: 'DigitalOcean', note: 'Software Engineer II, Dedicated Inference. Benchmarking and serving the GPU fleet.', href: '#experience' },
+        { id: 'cloud', d: 'sys', t: 2026.25, w: 0.5, name: 'vLLM on Kubernetes', note: 'Throughput and latency benchmarks across hardware, model, and concurrency configs.', href: '#experience' },
+        { id: 'devtools', d: 'sys', t: 2026.3, w: 0.45, name: 'Prefill/decode disaggregation', note: "DigitalOcean's first PD split, with KV cache reuse via LMCache.", href: '#experience' },
+        { id: 'modelopt', d: 'sys', t: 2026.6, w: 0.5, name: 'Model Optimization Tool', note: 'Profiles and tunes GPU kernels via LLM tool-use and automated benchmarking.', href: '#experience' },
+        { id: 'aietalk', d: 'sys', t: 2026.86, w: 0.55, name: 'AI Engineer Code Summit', note: 'Co-presented "Stop Shipping LLM Settings That Only Win on Paper".', href: 'https://youtu.be/cWrYEBlWpcY' },
         { id: 'lumina', d: 'sys', t: 2026.2, w: 0.95, name: 'Lumina Research', note: 'Founder. A course that takes you from a research question to a submitted paper.', href: 'https://www.lumina-research.com/' },
         { id: 'pipeline', d: 'sys', t: 2026.3, w: 0.4, name: 'Research workflow', note: 'Question → literature → analysis → paper, AI-guided at every stage.', href: '#ventures' },
 
         // Mathematics
         { id: 'acms', d: 'math', t: 2022.2, w: 0.95, name: 'ACMS at UW', note: 'BS/MS in Applied & Computational Mathematical Sciences.', href: '#about' },
         { id: 'optim', d: 'math', t: 2024.2, w: 0.6, name: 'Mathematical optimization', note: 'The shared language under the RL, the ODEs, and the pipelines.', href: '#about' },
-        { id: 'poly', d: 'math', t: 2025.8, w: 0.6, name: 'Polynomial synthesis', note: 'Efficient arithmetic circuits for degree-m polynomials.', href: '#experience' },
+        { id: 'poly', d: 'math', t: 2025.8, w: 0.6, name: 'Polynomial synthesis', note: 'Efficient arithmetic circuits for polynomials over finite fields.', href: '#experience' },
         { id: 'regress', d: 'math', t: 2024.95, w: 0.4, name: 'Regression & loss design', note: 'Fitting models to messy, real, patient-derived data.', href: '#experience' },
         { id: 'symbolic', d: 'math', t: 2026.4, w: 0.45, name: 'Symbolic systems', note: 'Where the algebra and the learned policy meet.', href: '#about' }
     ];
